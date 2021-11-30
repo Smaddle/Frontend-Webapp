@@ -1,0 +1,17 @@
+:root{
+  --background-primary: #efefef;
+  --background-secondary: #fff;
+  --text-primary: black;
+  --text-secondary: gray;
+}
+
+@media (prefers-color-scheme: dark){
+  :root{
+    --background-primary: #373737;
+    --background-secondary: #3b3b3b;
+    --background-tertiary: #2a2a2a;
+    --text-primary: white;
+    -text-secondary: silver;
+  }
+}
+
