@@ -1,5 +1,4 @@
 <template>
-  <b-container fluid class="home">
     <b-row no-gutters>
       <b-col class="center" cols="12" md="6" order-md="2">
         <Map />
@@ -25,7 +24,6 @@
         </b-row>
       </b-col>
     </b-row>
-  </b-container>
 </template>
 
 <script>

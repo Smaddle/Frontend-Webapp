@@ -1,6 +1,7 @@
 :root{
   --background-primary: #efefef;
   --background-secondary: #fff;
+  --background-tertiary: rgba(192, 192, 192, 0.82);
   --text-primary: black;
   --text-secondary: gray;
 }
@@ -11,7 +12,7 @@
     --background-secondary: #3b3b3b;
     --background-tertiary: #2a2a2a;
     --text-primary: white;
-    -text-secondary: silver;
+    --text-secondary: silver;
   }
 }
 
