@@ -1,5 +1,5 @@
 <template>
-  <div id="mapContainer" class="basemap"></div>
+  <div id="mapContainer"></div>
 </template>
 
 <script>
@@ -9,25 +9,32 @@ export default {
   name: "Map",
   data() {
     return {
-      markerData: {
-        type: 'FeatureCollection',
-        features: [
+      markerData: [
           {
             type: 'Feature',
+            properties: {
+              'name':'RaceFiets Bob',
+              'lastSeen': '5 december 19:49',
+              'imageUrl': 'https://i.pinimg.com/736x/f6/1c/de/f61cdee3e645b0d5948c837bd446fe8f--libraries-swag.jpg'
+            },
             geometry: {
               type: 'Point',
-              coordinates: [0, 0]
+              coordinates: [5, 52]
             }
           },
           {
             type: 'Feature',
+            properties: {
+              'name':'Barbara fiets',
+              'lastSeen': '7 december 10:05',
+              'imageUrl': 'https://www.bikefeeling.nl/images/productimages/big/travel-lite-dames-e-bike-neodrives-santos.jpg'
+            },
             geometry: {
               type: 'Point',
-              coordinates: [100, 100]
+              coordinates: [5, 52.5]
             }
           },
-        ]
-      },
+        ],
       mapType: window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark-v10' :'streets-v11',
       map: null,
       pulsingDot: null
@@ -43,8 +50,10 @@ export default {
     this.map = new mapboxgl.Map({
       container: 'mapContainer', // container ID
       style: `mapbox://styles/mapbox/${this.mapType}`, // style URL
-      center: [-74.5, 40], // starting position [lng, lat]
-      zoom: 1 // starting zoom
+      center: [5, 52], // starting position [lng, lat]
+      zoom: 15, //initial zoom in
+      // minZoom: 8,
+      pitch: 30 //tilts camera
     });
 
     const size = 200;
@@ -110,22 +119,10 @@ export default {
 
       this.map.addSource('smaddle-locations', {
         'type': 'geojson', 'data': {
-          'type': 'FeatureCollection',
-          'features': [
-            {
-              'type': 'Feature',
-              'properties': {
-                'description': 'test'
-              },
-              'geometry':
-                  {
-                    'type': 'Point',
-                    'coordinates': [5, 52] // icon position [lng, lat]
-                  }
-            }
-          ]
+          type: 'FeatureCollection',
+          features: this.markerData
         }
-      });
+        });
 
       this.map.addLayer({
         'id': 'layer-with-pulsing-dot',
@@ -137,49 +134,36 @@ export default {
       });
 
       this.map.on('click', 'layer-with-pulsing-dot', (e) => {
-        console.log(e.features[0].properties.description);
+        this.$emit('smaddleSelected', e.features[0].properties);
+        this.map.flyTo({
+          center: e.features[0].geometry.coordinates,
+          zoom: 16,
+          duration: 3000,
+          curve: 1
+        });
       })
+    },
+
+    createMarkerData(smaddle) {
+      return ({
+        type: 'Feature',
+        properties: {
+          'name': smaddle.name,
+          'lastSeen': smaddle.date,
+          'imageUrl': smaddle.image
+        },
+        geometry: {
+          type: 'Point',
+          coordinates: [smaddle.lat, smaddle.long]
+        }
+      });
     }
   }
 };
 </script>
 <style lang="scss" scoped>
-.basemap {
+#mapContainer {
   width: 100%;
   height: calc(100vh - 56px);
-}
-
-</style>
-<style lang="scss">
-.marker {
-  //background-image: url('../assets/bike.png');
-  display: flex;
-  background-size: cover;
-  background: red;
-  width: 30px;
-  height: 30px;
-  border-radius: 50%;
-  cursor: pointer;
-  justify-content: center;
-  align-items: center;
-  white-space: nowrap;
-  .text{
-    background-color: var(--background-primary);
-    border-radius: 50px;
-    transition: .3s;
-    font-size: small;
-    margin-top: calc(100% - 30px);
-    color: var(--text-primary);
-    text-align: center;
-    opacity: 0;
-    padding: 8px;
-  }
-  &:hover{
-    .text{
-      margin-top: calc(100% + 50px);
-      opacity: 1;
-    }
-
-  }
 }
 </style>

@@ -1,39 +1,38 @@
 <template>
     <b-row no-gutters>
       <b-col class="center" cols="12" md="6" order-md="2">
-        <Map />
+        <Map @smaddleSelected="setSelectedSmaddle"/>
       </b-col>
       <NavColumn/>
-      <b-col class="right p-3" cols="12" md="3" order-md="3">
-        <b-row class="mb-2">
-          <b-col>
-            <b-img fluid class="py-2" src="https://i.pinimg.com/736x/f6/1c/de/f61cdee3e645b0d5948c837bd446fe8f--libraries-swag.jpg" alt="bike photo"></b-img>
-          </b-col>
-        </b-row>
-        <b-row class="mb-2">
-          <b-col class="text-left" cols="12">
-            <h5>Smaddle Details</h5>
-            <span>Racefiets Bob</span>
-          </b-col>
-        </b-row>
-        <b-row>
-          <b-col class="text-left" cols="12">
-            <h5>Laatst gezien</h5>
-            <span>29 November 2021</span>
-          </b-col>
-        </b-row>
-      </b-col>
+      <SmaddleColumn :smaddle="selectedSmaddle"/>
     </b-row>
 </template>
 
 <script>
 import NavColumn from "../components/NavColumn";
 import Map from "../components/Map";
+import SmaddleColumn from "../components/SmaddleColumn";
 export default {
   name: 'Home',
   components: {
     NavColumn,
-    Map
+    Map,
+    SmaddleColumn
+  },
+  data() {
+    return {
+      selectedSmaddle: {
+        'name':'Bas fiets',
+        'lastSeen': '7 december 10:05',
+        'imageUrl': 'https://www.bikefeeling.nl/images/productimages/big/travel-lite-dames-e-bike-neodrives-santos.jpg'
+      }
+    }
+    },
+  methods: {
+    setSelectedSmaddle(e) {
+      this.selectedSmaddle = e
+      console.log(e);
+    }
   }
 }
 </script>
@@ -42,13 +41,6 @@ export default {
   div{
     .center {
       background: var(--background-primary);
-    }
-    .right {
-      background: var(--background-tertiary);
-      h5 {
-        color: var(--text-secondary);
-        margin-bottom: 0px;
-      }
     }
   }
 </style>
