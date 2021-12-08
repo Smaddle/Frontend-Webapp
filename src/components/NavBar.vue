@@ -4,9 +4,9 @@
     <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
     <b-collapse id="nav-collapse" is-nav>
       <b-navbar-nav class="ml-auto">
-        <b-nav-item  href="#">
+        <b-button v-b-toggle.sidebar-1>Toggle Sidebar
           <b-icon-person-fill/>
-        </b-nav-item>
+        </b-button>
       </b-navbar-nav>
     </b-collapse>
   </b-navbar>

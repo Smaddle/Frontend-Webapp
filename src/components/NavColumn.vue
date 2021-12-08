@@ -1,37 +1,13 @@
 <template>
-  <b-col class="nav-column" cols="12" md="3" order-md="1">
+  <b-sidebar id="sidebar-1" class="nav-column" title="Sidebar" shadow>
     <div id="profile-display">
-      <b-row class="mb-2">
-        <b-col cols="12" >
           <img src="https://randomuser.me/api/portraits/men/75.jpg" alt="profile picture">
-        </b-col>
-      </b-row>
-      <b-row>
-        <b-col cols="12" >
           <span>Bob Huis</span>
-        </b-col>
-      </b-row>
     </div>
-    <b-row>
-      <b-col class="text-left" cols="12">
-        <b-row>
-          <b-col>
-            <router-link :to="'/'"><b-icon-map-fill class="mr-2"/>Kaart</router-link>
-          </b-col>
-        </b-row>
-        <b-row>
-          <b-col>
-            <router-link :to="'Account'"><b-icon-gear-fill class="mr-2"/>Settings</router-link>
-          </b-col>
-        </b-row>
-        <b-row>
-          <b-col>
-            <router-link :to="'Account'"><b-icon-person-fill class="mr-2"/>Account</router-link>
-          </b-col>
-        </b-row>
-      </b-col>
-    </b-row>
-  </b-col>
+      <router-link :to="'/'"><b-icon-map-fill class="mr-2"/>Kaart</router-link>
+      <router-link :to="'Account'"><b-icon-gear-fill class="mr-2"/>Settings</router-link>
+      <router-link :to="'Account'"><b-icon-person-fill class="mr-2"/>Account</router-link>
+  </b-sidebar>
 </template>
 
 <script>
@@ -39,17 +15,30 @@ export default {
   name: "NavColumn"
 }
 </script>
-
+<style>
+  .b-sidebar-body {
+    background: var(--background-secondary);
+  }
+  .b-sidebar-header {
+    background: var(--background-secondary);
+    color: var(--text-primary);
+  }
+</style>
 <style scoped lang="scss">
-  .nav-column {
+  .b-sidebar-body{
     background: var(--background-secondary);
 
     #profile-display {
       background: var(--background-primary);
       padding: 3rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
 
       img {
+        padding-bottom: 1rem;
         border-radius: 50%;
+        max-width: 50%;
       }
     }
 
@@ -66,6 +55,7 @@ export default {
       color: var(--text-primary);
       display: block;
       padding: 1rem;
+      text-align: start;
     }
   }
 </style>

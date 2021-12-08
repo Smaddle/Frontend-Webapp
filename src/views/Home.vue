@@ -1,34 +1,32 @@
 <template>
     <b-row no-gutters>
         <Map @smaddleSelected="setSelectedSmaddle"/>
-<!--      <NavColumn/>-->
-      <SmaddleColumn :smaddle="selectedSmaddle" :show="false"/>
+      <NavColumn/>
+      <SmaddleColumn :smaddle="selectedSmaddle" :show="showSmaddleColumn"/>
     </b-row>
 </template>
 
 <script>
-// import NavColumn from "../components/NavColumn";
+import NavColumn from "../components/NavColumn";
 import Map from "../components/Map";
 import SmaddleColumn from "../components/SmaddleColumn";
 export default {
   name: 'Home',
   components: {
-    // NavColumn,
+    NavColumn,
     Map,
     SmaddleColumn
   },
   data() {
     return {
-      selectedSmaddle: {
-        'name':'Bas fiets',
-        'lastSeen': '7 december 10:05',
-        'imageUrl': 'https://www.bikefeeling.nl/images/productimages/big/travel-lite-dames-e-bike-neodrives-santos.jpg'
-      }
+      selectedSmaddle: {},
+      showSmaddleColumn: false
     }
     },
   methods: {
     setSelectedSmaddle(e) {
       this.selectedSmaddle = e
+      this.showSmaddleColumn = true
       console.log(e);
     }
   }
