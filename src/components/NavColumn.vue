@@ -14,19 +14,19 @@
     </div>
     <b-row>
       <b-col class="text-left" cols="12">
-        <b-row class="link fluid p-3">
+        <b-row>
           <b-col>
-            <span><b-icon-map-fill class="mr-2"/>Kaart</span>
+            <router-link :to="'/'"><b-icon-map-fill class="mr-2"/>Kaart</router-link>
           </b-col>
         </b-row>
-        <b-row class="link fluid p-3">
+        <b-row>
           <b-col>
-            <span><b-icon-gear-fill class="mr-2"/>Settings</span>
+            <router-link :to="'Account'"><b-icon-gear-fill class="mr-2"/>Settings</router-link>
           </b-col>
         </b-row>
-        <b-row class="link fluid p-3">
+        <b-row>
           <b-col>
-            <span><b-icon-person-fill class="mr-2"/>Account</span>
+            <router-link :to="'Account'"><b-icon-person-fill class="mr-2"/>Account</router-link>
           </b-col>
         </b-row>
       </b-col>
@@ -53,8 +53,19 @@ export default {
       }
     }
 
-    .link:hover {
+    a:hover {
       background: var(--background-primary);
+    }
+
+    .router-link-active {
+      background: var(--background-primary);
+    }
+
+    a {
+      text-decoration: none;
+      color: var(--text-primary);
+      display: block;
+      padding: 1rem;
     }
   }
 </style>

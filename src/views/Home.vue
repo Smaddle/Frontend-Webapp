@@ -1,21 +1,19 @@
 <template>
     <b-row no-gutters>
-      <b-col class="center" cols="12" md="6" order-md="2">
         <Map @smaddleSelected="setSelectedSmaddle"/>
-      </b-col>
-      <NavColumn/>
-      <SmaddleColumn :smaddle="selectedSmaddle"/>
+<!--      <NavColumn/>-->
+      <SmaddleColumn :smaddle="selectedSmaddle" :show="false"/>
     </b-row>
 </template>
 
 <script>
-import NavColumn from "../components/NavColumn";
+// import NavColumn from "../components/NavColumn";
 import Map from "../components/Map";
 import SmaddleColumn from "../components/SmaddleColumn";
 export default {
   name: 'Home',
   components: {
-    NavColumn,
+    // NavColumn,
     Map,
     SmaddleColumn
   },

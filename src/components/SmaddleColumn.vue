@@ -24,17 +24,23 @@
 export default {
   name: "SmaddleColumn.vue",
   props: {
-    smaddle: Object
+    smaddle: Object,
+    show: Boolean
   },
 }
 </script>
 
 <style scoped>
 .right {
+  position: absolute;
+  right: 0;
   background: var(--background-tertiary);
-  }
+  height: calc(100vh - 56px);
+
+}
   h5 {
     color: var(--text-secondary);
     margin-bottom: 0px;
+
   }
 </style>
