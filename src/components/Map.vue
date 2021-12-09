@@ -35,7 +35,7 @@ export default {
             }
           },
         ],
-      mapType: window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark-v10' :'streets-v11',
+      mapType: window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark-v10' :'light-v10',
       map: null,
       pulsingDot: null
     };
@@ -43,7 +43,7 @@ export default {
   mounted(){
     mapboxgl.accessToken = 'pk.eyJ1IjoianVsZXNpIiwiYSI6ImNqdHpsOWVqZjF1aDQ0YWx6MnkwYmUxOGEifQ.Ocnsvr8g-3kI8b0fJxDLgA';
     window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
-      this.mapType = e.matches ? "dark-v10" : "streets-v11";
+      this.mapType = e.matches ? "dark-v10" : "light-v10";
       this.map.setStyle(`mapbox://styles/mapbox/${this.mapType}`)
     });
 

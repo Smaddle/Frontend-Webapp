@@ -27,6 +27,7 @@ export default {
     setSelectedSmaddle(e) {
       this.selectedSmaddle = e
       this.showSmaddleColumn = true
+      this.$root.$emit('bv::toggle::collapse', 'sidebar-details')
       console.log(e);
     }
   }

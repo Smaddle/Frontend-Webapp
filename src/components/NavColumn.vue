@@ -1,11 +1,11 @@
 <template>
-  <b-sidebar id="sidebar-1" class="nav-column" title="Sidebar" shadow>
+  <b-sidebar id="sidebar-1" class="nav-column" title="Navigatie" shadow>
     <div id="profile-display">
           <img src="https://randomuser.me/api/portraits/men/75.jpg" alt="profile picture">
           <span>Bob Huis</span>
     </div>
       <router-link :to="'/'"><b-icon-map-fill class="mr-2"/>Kaart</router-link>
-      <router-link :to="'Account'"><b-icon-gear-fill class="mr-2"/>Settings</router-link>
+      <router-link :to="'Account'"><b-icon-gear-fill class="mr-2"/>Instellingen</router-link>
       <router-link :to="'Account'"><b-icon-person-fill class="mr-2"/>Account</router-link>
   </b-sidebar>
 </template>
@@ -15,13 +15,18 @@ export default {
   name: "NavColumn"
 }
 </script>
-<style>
+<style lang="scss">
   .b-sidebar-body {
     background: var(--background-secondary);
+    text-align: start;
+
   }
   .b-sidebar-header {
     background: var(--background-secondary);
     color: var(--text-primary);
+  }
+  .b-icon {
+    fill: var(--text-primary);
   }
 </style>
 <style scoped lang="scss">
@@ -55,7 +60,6 @@ export default {
       color: var(--text-primary);
       display: block;
       padding: 1rem;
-      text-align: start;
     }
   }
 </style>
