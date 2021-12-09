@@ -1,5 +1,5 @@
 <template>
-  <div id="mapContainer"></div>
+    <div id="mapContainer"/>
 </template>
 
 <script>
@@ -164,6 +164,6 @@ export default {
 <style lang="scss" scoped>
 #mapContainer {
   width: 100%;
-  height: calc(100vh - 56px);
+  height: 100%;
 }
 </style>

@@ -1,43 +1,76 @@
 <template>
-    <b-row no-gutters>
-        <Map @smaddleSelected="setSelectedSmaddle"/>
-      <NavColumn/>
-      <SmaddleColumn :smaddle="selectedSmaddle" :show="showSmaddleColumn"/>
-    </b-row>
+  <div id="home">
+    <Map @smaddleSelected="setSelectedSmaddle"/>
+    <div id="sidebar" :class="{hidden: selectedSmaddle === null}">
+      <header class="">
+        <b-row>
+          <b-col><h2>Smaddle naam</h2></b-col>
+          <b-col cols="auto"><b-button @click="selectedSmaddle = null">X</b-button></b-col>
+        </b-row>
+      </header>
+      <section>
+        <h5>Laatst gezien</h5>
+        <span></span>
+        <h5>meer info</h5>
+        <p>sfsdf</p>
+        <p>sfsdf</p>
+        <p>sfsdf</p>
+      </section>
+    </div>
+  </div>
 </template>
 
 <script>
-import NavColumn from "../components/NavColumn";
 import Map from "../components/Map";
-import SmaddleColumn from "../components/SmaddleColumn";
 export default {
   name: 'Home',
   components: {
-    NavColumn,
     Map,
-    SmaddleColumn
   },
   data() {
     return {
-      selectedSmaddle: {},
-      showSmaddleColumn: false
+      selectedSmaddle: null,
     }
     },
   methods: {
     setSelectedSmaddle(e) {
       this.selectedSmaddle = e
-      this.showSmaddleColumn = true
-      this.$root.$emit('bv::toggle::collapse', 'sidebar-details')
-      console.log(e);
     }
   }
 }
 </script>
 
 <style scoped lang="scss">
-  div{
-    .center {
-      background: var(--background-primary);
+#home{
+  height: 100%;
+  overflow: hidden;
+  position: relative;
+}
+
+#sidebar{
+  padding: 24px;
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  background: var(--background-secondary);
+  transition: .3s;
+  &.hidden{
+    transform: translateY(100%);
+  }
+}
+
+@media (min-width: 768px) {
+  #sidebar{
+
+    transform: translateX(0);
+    right: 0;
+    width: auto;
+    box-shadow: rgba(0, 0, 0, 0.1) 0 4px 12px;
+    height: calc(100% - 56px);
+    &.hidden{
+      transform: translateX(100%);
     }
   }
+}
+
 </style>
