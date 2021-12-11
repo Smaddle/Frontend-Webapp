@@ -1,10 +1,13 @@
 <template>
   <b-navbar toggleable="sm" type="light" variant="none">
-    <b-navbar-brand href="#"><strong>Smaddle</strong></b-navbar-brand>
+    <b-navbar-brand :to="'/'"><strong>Smaddle</strong></b-navbar-brand>
     <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
     <b-collapse id="nav-collapse" is-nav>
       <b-navbar-nav class="ml-auto">
-        <b-button variant="account">JI</b-button>
+        <b-nav-item :to="'settings'"><b-icon-gear-fill/> Instellingen</b-nav-item>
+        <b-nav-item :to="'account'">
+          <b-button variant="account">JI</b-button>
+        </b-nav-item>
       </b-navbar-nav>
       </b-collapse>
     </b-navbar>
@@ -27,6 +30,11 @@ export default {
     .navbar-brand, .nav-link
     {
       color: var(--text-primary) !important;
+    }
+
+    .nav-item {
+      margin: auto;
+      font-weight: bold;
     }
 
     .btn {
