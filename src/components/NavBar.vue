@@ -4,7 +4,7 @@
     <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
     <b-collapse id="nav-collapse" is-nav>
       <b-navbar-nav class="ml-auto">
-        <b-nav-item :to="'settings'"><b-icon-gear-fill/> Instellingen</b-nav-item>
+        <b-nav-item :to="'settings'" class="px-3"><b-icon-gear-fill/> Instellingen</b-nav-item>
         <b-nav-item :to="'account'">
           <b-button variant="account">JI</b-button>
         </b-nav-item>
@@ -20,7 +20,7 @@ export default {
 </script>
 
 <style scoped lang="scss">
-  .navbar{
+  .navbar {
     position: absolute;
     top: 0;
     left: 0;
