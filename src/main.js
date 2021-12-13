@@ -9,6 +9,7 @@ import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
 
 import './assets/styles/app.scss'
+import './registerServiceWorker'
 
 // Make BootstrapVue available throughout your project
 Vue.use(BootstrapVue)
