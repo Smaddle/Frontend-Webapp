@@ -1,6 +1,9 @@
 @import "theme";
+@import "map/marker-smaddle";
+@import "buttons/btn-square";
+@import "buttons/btn-icon";
 
 html,body{
-  background-color: var(--background-primary);
+  background-color: var(--background-secondary);
   height: 100%;
 }

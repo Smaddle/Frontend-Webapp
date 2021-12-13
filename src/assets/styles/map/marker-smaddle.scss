@@ -1,0 +1,44 @@
+.mapboxgl-marker.smaddle{
+  --color: var(--primary);
+  white-space: nowrap;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  &:hover{
+    cursor: pointer;
+  }
+  .circle {
+    width: 30px;
+    height: 30px;
+    background-color: var(--color);
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: end;
+  }
+  .ringring {
+    border: 3px solid var(--color);
+    -webkit-border-radius: 50%;
+    height: 30px;
+    width: 30px;
+    position: absolute;
+    -webkit-animation: pulsate 1s ease-out;
+    -webkit-animation-iteration-count: infinite;
+    opacity: 0.0
+  }
+  .name{
+    position: absolute;
+    bottom: -3px;
+    transform: translateY(100%);
+    font-weight: bolder;
+  }
+  @-webkit-keyframes pulsate {
+    0% {-webkit-transform: scale(0.1, 0.1); opacity: 0.0;}
+    50% {opacity: 1.0;}
+    100% {-webkit-transform: scale(1.7, 1.7); opacity: 0.0;}
+  }
+
+  &.stolen{--color: var(--danger)}
+  &.offline{--color: var(--orange)}
+}
