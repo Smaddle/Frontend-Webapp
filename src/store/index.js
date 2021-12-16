@@ -100,14 +100,11 @@ export default new Vuex.Store({
       commit('selectSmaddle', smaddle)
     },
     login({commit}, loginData){
-      let data = new FormData();
-      data.append('username', loginData.username);
-      data.append('password', loginData.password);
       return new Promise((resolve, reject) =>{
         commit('setStatus', 'fetching')
         fetch('https://api.smaddle.nl/users/login',{
           method: 'POST',
-          body: data
+          body: loginData
         }).then(response => response.json().then((data)=>{
           commit('setStatus', response.status)
           commit('setUser', data)
@@ -118,19 +115,11 @@ export default new Vuex.Store({
       })
     },
     register({commit}, registerData){
-      let data = new FormData();
-      data.append('username', registerData.username);
-      data.append('password', registerData.password);
-      data.append('emailaddress', registerData.emailaddress);
-      data.append('firstname', registerData.firstname);
-      data.append('lastname', registerData.lastname);
-      data.append('middlename', registerData.middlename);
-      data.append('product_token', registerData.product_token);
       return new Promise((resolve, reject) =>{
         commit('setStatus', 'fetching')
         fetch('https://api.smaddle.nl/users/register',{
           method: 'POST',
-          body: data
+          body: registerData
         }).then(response => response.json().then((data)=>{
           commit('setStatus', response.status)
           resolve(data)
