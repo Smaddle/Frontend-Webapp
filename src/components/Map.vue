@@ -68,6 +68,8 @@ export default {
 
     this.map.on('style.load', () => {
     })
+
+    this.$store.dispatch('registerDevices')
   },
 };
 </script>

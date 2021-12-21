@@ -15,73 +15,18 @@ export default new Vuex.Store({
           name:'Driewieller van Sascha',
           last_updated: 1639405146,
           stolen: false,
-          battery: 20
+          battery: 20,
+          DeviceToken: "4ea2353a-fc4d-4463-b244-1279243b4396"
         },
         geometry: {
           type: 'Point',
           coordinates: [5, 52]
         }
       },
-      {
-        type: 'Feature',
-        properties: {
-          id: 1,
-          name:'Eénwieller van Robin',
-          last_updated: 1639405146,
-          stolen: false,
-          battery: 30
-        },
-        geometry: {
-          type: 'Point',
-          coordinates: [5, 52.5]
-        },
-
-      },
-      {
-        type: 'Feature',
-        properties: {
-          id: 2,
-          name:'Smaddle Jules',
-          last_updated: 1639405146,
-          stolen: false,
-          battery: 60
-        },
-        geometry: {
-          type: 'Point',
-          coordinates: [4.411096572875977,51.82320616544812]
-        }
-      },
-      {
-        type: 'Feature',
-        properties: {
-          id: 3,
-          name:'Smaddle Niels',
-          last_updated: 1639405146,
-          stolen: true,
-          battery: 80
-        },
-        geometry: {
-          type: 'Point',
-          coordinates: [4.56731915473938,51.78630065436369]
-        }
-      },
-      {
-        type: 'Feature',
-        properties: {
-          id: 3,
-          name: 'Smaddle Martijn',
-          last_updated: 1638800926,
-          stolen: false,
-          battery: 100
-        },
-        geometry: {
-          type: 'Point',
-          coordinates: [4.484079480171204,51.91714442767075]
-        }
-      }
     ], //updated from geojson server (sascha)
     user: null,
-    status: null
+    status: null,
+    webSocket: null
   },
   mutations: {
     selectSmaddle(state,smaddle){
@@ -92,6 +37,18 @@ export default new Vuex.Store({
     },
     setStatus(state,status){
       state.status = status
+    },
+    setWebSocket(state, socket){
+      state.webSocket = socket
+    },
+
+    updateSmaddles(state, socketData)
+    {
+      state.markerData.forEach((marker) => {
+        let updatedData = socketData.filter(smaddle => smaddle.properties.Id == marker.properties.DeviceToken)
+        //overwrite the fields marker and updatedData have in common with updatedData
+        marker = {...marker, ...updatedData}
+      })
     }
 
   },
@@ -128,6 +85,28 @@ export default new Vuex.Store({
         })
       })
     },
+
+  //  geojson realted actions
+    registerDevices({state, commit}, device)
+    {
+      //Todo get the list with devices from backend user model then register those via this websocket connection
+      let socket = new WebSocket("ws://track.smaddle.nl:8888")
+      socket.onopen = () => socket.send(JSON.stringify({
+        "action": "REGISTER",
+        "instructions":[""],
+        "smaddles": state.markerData.map(smaddle => smaddle.properties.DeviceToken) //get a list of all the device tokens to track
+      }))
+
+      socket.onmessage = (e) => {
+        let data = JSON.parse(e.data.features)
+        console.log(data)
+        commit("updateSmaddles", data)
+      }
+      commit('setWebSocket', socket)
+      console.log("device registered")
+      console.log(commit)
+      console.log(device)
+    }
   },
   modules: {
   }
