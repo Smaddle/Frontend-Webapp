@@ -22,6 +22,8 @@ export default {
     })
   },
   mounted(){
+    console.log('mounting map')
+    this.$store.dispatch('registerDevices')
     mapboxgl.accessToken = 'pk.eyJ1IjoianVsZXNpIiwiYSI6ImNqdHpsOWVqZjF1aDQ0YWx6MnkwYmUxOGEifQ.Ocnsvr8g-3kI8b0fJxDLgA';
     window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
       this.mapType = e.matches ? "dark-v10" : "light-v10";
@@ -38,7 +40,8 @@ export default {
     });
 
 
-    for (const marker of this.markerData){
+    for (let marker of this.markerData){
+      marker = marker[1]
       const el = document.createElement('div');
       el.className = 'smaddle';
       if (marker.properties.stolen) { el.className += ' stolen'}
@@ -68,8 +71,6 @@ export default {
 
     this.map.on('style.load', () => {
     })
-
-    this.$store.dispatch('registerDevices')
   },
 };
 </script>
