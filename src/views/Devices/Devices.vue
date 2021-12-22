@@ -15,7 +15,6 @@
   <b-modal id="modal-add-smaddle" title="Smaddle Toevoegen">
     <b-form id="linkDevice-form">
     <p class="my-4">Hier kan je een smaddle toeveogen aan jouw account.</p>
-
       <b-form-group label="Token">
         <b-form-input required placeholder="xxx-xxx-xxx-xxx"/>
       </b-form-group>
@@ -24,8 +23,7 @@
       </b-form-group>
     </b-form>
     <template #modal-footer>
-      <b-button>Sluiten</b-button>
-      <b-button variant="primary" @click="linkDevice($event)" form="linkDevice-form">Toevoegen</b-button>
+      <b-button variant="primary">Toevoegen</b-button>
     </template>
   </b-modal>
 </div>
@@ -45,7 +43,6 @@ export default {
   methods:{
     linkDevice(e){
       e.preventDefault();
-      document.getElementById('linkDevice-form').submit();
     }
   }
 }
