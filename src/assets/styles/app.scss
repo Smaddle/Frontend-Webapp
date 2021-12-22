@@ -7,3 +7,11 @@ html,body{
   background-color: var(--background-secondary);
   height: 100%;
 }
+
+.modal-content{
+  background-color: var(--background-secondary);
+  color: var(--text-primary);
+  .close{
+    color: var(--text-primary)
+  }
+}

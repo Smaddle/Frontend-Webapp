@@ -3,9 +3,10 @@ import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
 import Auth from "../views/Auth/Auth";
 import Account from "../views/Account";
-import Devices from "@/views/Devices";
+import Devices from "@/views/Devices/Devices";
 import Login from "@/views/Auth/Login";
 import Register from "@/views/Auth/Register";
+import Device from "@/views/Devices/Device";
 
 Vue.use(VueRouter)
 
@@ -23,7 +24,13 @@ const routes = [
   {
     path: '/devices',
     name: 'Devices',
-    component: Devices
+    component: Devices,
+    children: [
+      {
+        path: ':id',
+        component: Device
+      },
+    ]
   },
   {
     path: '/auth',
