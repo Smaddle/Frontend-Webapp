@@ -7,7 +7,7 @@ export default new Vuex.Store({
   state: {
     selectedSmaddle: null,
     daysWhenOffline: 7, //amount of days when tracker is registered as offline
-    markerData: new Map([["4ea2353a-fc4d-4463-b244-1279243b4396", {
+    geoJson: new Map([["4ea2353a-fc4d-4463-b244-1279243b4396", {
       type: 'Feature',
       properties: {
         id: 0,
@@ -44,17 +44,17 @@ export default new Vuex.Store({
     //used for setting the smaddle data from backend
     setSmaddle(state, smaddle)
     {
-      state.markerData.set(smaddle.properties.DeviceToken, smaddle)
+      state.geoJson.set(smaddle.properties.DeviceToken, smaddle)
     },
 
     //used to process the smaddle data given by DeviceApi
-    updateSmaddles(state, socketData)
+    updateGeoJson(state, socketData)
     {
       socketData.forEach(smaddle => {
-        state.markerData.set(smaddle.properties.Id,
+        state.geoJson.set(smaddle.properties.Id,
             {
               type: "feature",
-              properties: {...state.markerData.get(smaddle.properties.Id).properties, ...smaddle.properties},
+              properties: {...state.geoJson.get(smaddle.properties.Id).properties, ...smaddle.properties},
               geometry: smaddle.geometry
             })
       })
@@ -100,7 +100,7 @@ export default new Vuex.Store({
     {
       //Todo get the list with devices from backend user model then register those via this websocket connection
       const deviceTokens = [];
-      for (let smaddle of state.markerData.values()) {
+      for (let smaddle of state.geoJson.values()) {
         deviceTokens.push(smaddle.properties.DeviceToken); //get all the tokens of the smaddles we want to track
       }
 
@@ -114,7 +114,7 @@ export default new Vuex.Store({
       socket.onmessage = (e) => {
         let data = JSON.parse(e.data).features
         commit("updateSmaddles", data)
-        console.log(state.markerData.get("4ea2353a-fc4d-4463-b244-1279243b4396").geometry.coordinates)
+        console.log(state.geoJson.get("4ea2353a-fc4d-4463-b244-1279243b4396").geometry.coordinates)
       }
       commit('setWebSocket', socket)
       console.log(device)

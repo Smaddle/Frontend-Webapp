@@ -17,7 +17,7 @@ export default {
   },
   computed:{
     ...mapState({
-      markerData: state => state.markerData,
+      geoJson: state => state.geoJson,
       daysWhenOffline: state => state.daysWhenOffline
     })
   },
@@ -71,8 +71,8 @@ export default {
     });
 
 
-    for (let marker of this.markerData){
-      this.createMarker(marker[1])
+    for (let g of this.geoJson){
+      this.createMarker(g[1])
     }
 
   },
