@@ -25,7 +25,7 @@ export default new Vuex.Store({
     //updated from geojson server (sascha)
     user: null,
     status: null,
-    webSocket: null
+    webSocket: null,
   },
   mutations: {
     selectSmaddle(state,smaddle){
@@ -59,7 +59,6 @@ export default new Vuex.Store({
             })
       })
     }
-
   },
   actions: {
     setSelectedSmaddle({commit}, smaddle){
@@ -115,7 +114,7 @@ export default new Vuex.Store({
       socket.onmessage = (e) => {
         let data = JSON.parse(e.data).features
         commit("updateSmaddles", data)
-        console.log(state.markerData)
+        console.log(state.markerData.get("4ea2353a-fc4d-4463-b244-1279243b4396").geometry.coordinates)
       }
       commit('setWebSocket', socket)
       console.log(device)

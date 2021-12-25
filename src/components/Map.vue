@@ -21,27 +21,10 @@ export default {
       daysWhenOffline: state => state.daysWhenOffline
     })
   },
-  mounted(){
-    console.log('mounting map')
-    this.$store.dispatch('registerDevices')
-    mapboxgl.accessToken = 'pk.eyJ1IjoianVsZXNpIiwiYSI6ImNqdHpsOWVqZjF1aDQ0YWx6MnkwYmUxOGEifQ.Ocnsvr8g-3kI8b0fJxDLgA';
-    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
-      this.mapType = e.matches ? "dark-v10" : "light-v10";
-      this.map.setStyle(`mapbox://styles/mapbox/${this.mapType}`)
-    });
 
-    this.map = new mapboxgl.Map({
-      container: 'mapContainer', // container ID
-      style: `mapbox://styles/mapbox/${this.mapType}`, // style URL
-      center: [5, 52], // starting position [lng, lat]
-      zoom: 15, //initial zoom in
-      // minZoom: 8,
-      pitch: 30 //tilts camera
-    });
-
-
-    for (let marker of this.markerData){
-      marker = marker[1]
+  methods: {
+    createMarker(marker)
+    {
       const el = document.createElement('div');
       el.className = 'smaddle';
       if (marker.properties.stolen) { el.className += ' stolen'}
@@ -68,9 +51,30 @@ export default {
       })
       new mapboxgl.Marker(el).setLngLat(marker.geometry.coordinates).addTo(this.map)
     }
+  },
 
-    this.map.on('style.load', () => {
-    })
+  mounted(){
+    this.$store.dispatch('registerDevices')
+    mapboxgl.accessToken = 'pk.eyJ1IjoianVsZXNpIiwiYSI6ImNqdHpsOWVqZjF1aDQ0YWx6MnkwYmUxOGEifQ.Ocnsvr8g-3kI8b0fJxDLgA';
+    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
+      this.mapType = e.matches ? "dark-v10" : "light-v10";
+      this.map.setStyle(`mapbox://styles/mapbox/${this.mapType}`)
+    });
+
+    this.map = new mapboxgl.Map({
+      container: 'mapContainer', // container ID
+      style: `mapbox://styles/mapbox/${this.mapType}`, // style URL
+      center: [5, 52], // starting position [lng, lat]
+      zoom: 15, //initial zoom in
+      // minZoom: 8,
+      pitch: 30 //tilts camera
+    });
+
+
+    for (let marker of this.markerData){
+      this.createMarker(marker[1])
+    }
+
   },
 };
 </script>
