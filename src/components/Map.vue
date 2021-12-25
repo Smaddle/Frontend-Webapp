@@ -18,7 +18,8 @@ export default {
   computed:{
     ...mapState({
       geoJson: state => state.geoJson,
-      daysWhenOffline: state => state.daysWhenOffline
+      daysWhenOffline: state => state.daysWhenOffline,
+      markers: state => state.markers
     })
   },
 
@@ -49,7 +50,9 @@ export default {
           curve: 1
         });
       })
-      new mapboxgl.Marker(el).setLngLat(marker.geometry.coordinates).addTo(this.map)
+      let id = marker.properties.DeviceToken
+      this.markers.set(id, new mapboxgl.Marker(el));
+      this.markers.get(id).setLngLat(marker.geometry.coordinates).addTo(this.map)
     }
   },
 

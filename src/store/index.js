@@ -22,7 +22,12 @@ export default new Vuex.Store({
         coordinates: [5, 52]
       }
     }]]),
-    //updated from geojson server (sascha)
+    /* Markers wont update if the coordinates change.
+      *  In order to update the marker marker.setLngLat() needs to be called.
+      *  In order to call that function the marker instance needs to be saved in this property
+      *  It's not combined with geoJson in a map, because that would make it harder to update the geoJson*/
+    markers: new Map(),
+
     user: null,
     status: null,
     webSocket: null,
@@ -57,6 +62,7 @@ export default new Vuex.Store({
               properties: {...state.geoJson.get(smaddle.properties.Id).properties, ...smaddle.properties},
               geometry: smaddle.geometry
             })
+        state.markers.get(smaddle.properties.Id).setLngLat(smaddle.geometry.coordinates)
       })
     }
   },
@@ -113,7 +119,7 @@ export default new Vuex.Store({
 
       socket.onmessage = (e) => {
         let data = JSON.parse(e.data).features
-        commit("updateSmaddles", data)
+        commit("updateGeoJson", data)
         console.log(state.geoJson.get("4ea2353a-fc4d-4463-b244-1279243b4396").geometry.coordinates)
       }
       commit('setWebSocket', socket)
