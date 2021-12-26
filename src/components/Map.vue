@@ -19,7 +19,7 @@ export default {
     ...mapState({
       geoJson: state => state.geoJson,
       daysWhenOffline: state => state.daysWhenOffline,
-      markers: state => state.markers
+      markerData: state => state.markerData
     })
   },
 
@@ -51,8 +51,8 @@ export default {
         });
       })
       let id = marker.properties.DeviceToken
-      this.markers.set(id, new mapboxgl.Marker(el));
-      this.markers.get(id).setLngLat(marker.geometry.coordinates).addTo(this.map)
+      this.$store.commit('setMarker', {id: id, marker: new mapboxgl.Marker(el)});
+      this.markerData.get(id).marker.setLngLat(marker.geometry.coordinates).addTo(this.map)
     }
   },
 
@@ -73,11 +73,9 @@ export default {
       pitch: 30 //tilts camera
     });
 
-
-    for (let g of this.geoJson){
-      this.createMarker(g[1])
+    for (let marker of this.markerData){
+      this.createMarker(marker[1].geoJson)
     }
-
   },
 };
 </script>
