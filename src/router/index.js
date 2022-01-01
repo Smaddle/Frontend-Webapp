@@ -7,6 +7,7 @@ import Devices from "@/views/Devices/Devices";
 import Login from "@/views/Auth/Login";
 import Register from "@/views/Auth/Register";
 import Device from "@/views/Devices/Device";
+import store from "../store/index.js";
 
 Vue.use(VueRouter)
 
@@ -65,4 +66,15 @@ const router = new VueRouter({
   routes
 })
 
+router.beforeEach((to, from, next) => {
+  //todo check the correct status set after login.
+  if(!(to.name == "Inloggen" || to.name == "Account Aanmaken") && store.state.status != "loggedIn") {
+    next({name: 'Inloggen'})
+  }
+  else {
+    next()
+  }
+  console.log(store.state.status)
+  console.log(to, from, next)
+})
 export default router
