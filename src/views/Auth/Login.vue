@@ -2,7 +2,7 @@
   <div class="login pb-3">
     <b-form @submit="login">
       <b-form-group label="E-mailadres">
-        <b-form-input type="email" required v-model="loginData.username"/>
+        <b-form-input type="text" required v-model="loginData.username"/>
       </b-form-group>
       <b-form-group label="Wachtwoord">
         <b-form-input type="password" required v-model="loginData.password"/>
@@ -26,7 +26,8 @@ export default {
     }
   },
   methods:{
-    login(){
+    login(e){
+      e.preventDefault(e);
       this.$store.dispatch('login', this.loginData)
     }
   }

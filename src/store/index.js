@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-
+import router from '../router/index'
 Vue.use(Vuex)
 
 export default new Vuex.Store({
@@ -80,20 +80,27 @@ export default new Vuex.Store({
       commit('selectSmaddle', smaddle)
     },
 
-    login({commit}, loginData){
-      return new Promise((resolve, reject) =>{
-        commit('setStatus', 'fetching')
-        fetch('http://localhost:8888',{
+    async login({commit}, loginData) {
+      commit('setStatus', 'fetching')
+      try {
+        let res = await fetch('http://localhost:8000/Users/login', {
           method: 'POST',
-          body: loginData
-        }).then(response => response.json().then((data)=>{
-          commit('setStatus', response.status)
-          commit('setUser', data)
-          resolve(data)
-        })).catch((e)=>{
-          reject(e)
+          headers: {
+            'Accept': 'application/json, text/plain',
+            'Content-Type': 'application/json;charset=UTF-8'
+          },
+          body: JSON.stringify({username: loginData.username, password: loginData.password})
         })
-      })
+        if (res.status === 200)
+        {
+          commit('setStatus', 'loggedIn')
+          commit('setUser', await res.json())
+          router.push({ name: 'Home'})
+        }
+      }
+      catch (e) {
+        console.log(e)
+      }
     },
     register({commit}, registerData){
       return new Promise((resolve, reject) =>{

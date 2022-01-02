@@ -67,14 +67,12 @@ const router = new VueRouter({
 })
 
 router.beforeEach((to, from, next) => {
-  //todo check the correct status set after login.
   if(!(to.name == "Inloggen" || to.name == "Account Aanmaken") && store.state.status != "loggedIn") {
+    console.log(store.state.status)
     next({name: 'Inloggen'})
   }
   else {
     next()
   }
-  console.log(store.state.status)
-  console.log(to, from, next)
 })
 export default router
