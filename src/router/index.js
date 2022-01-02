@@ -68,7 +68,6 @@ const router = new VueRouter({
 
 router.beforeEach((to, from, next) => {
   if(!(to.name == "Inloggen" || to.name == "Account Aanmaken") && store.state.status != "loggedIn") {
-    console.log(store.state.status)
     next({name: 'Inloggen'})
   }
   else {

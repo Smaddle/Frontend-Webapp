@@ -1,7 +1,7 @@
 <template>
   <div class="login pb-3">
     <b-form @submit="login">
-      <b-form-group label="E-mailadres">
+      <b-form-group label="Username">
         <b-form-input type="text" required v-model="loginData.username"/>
       </b-form-group>
       <b-form-group label="Wachtwoord">

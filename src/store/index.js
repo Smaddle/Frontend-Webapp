@@ -102,19 +102,36 @@ export default new Vuex.Store({
         console.log(e)
       }
     },
-    register({commit}, registerData){
-      return new Promise((resolve, reject) =>{
-        commit('setStatus', 'fetching')
-        fetch('https://api.smaddle.nl/users/register',{
+
+    async register(state, registerData){
+      //todo check if these statuses are necessary
+      // commit('setStatus', 'fetching')
+      console.log(registerData.lastname)
+      try {
+        let res = await fetch('http://localhost:8000/Users/register', {
           method: 'POST',
-          body: registerData
-        }).then(response => response.json().then((data)=>{
-          commit('setStatus', response.status)
-          resolve(data)
-        })).catch((e)=>{
-          reject(e)
+          headers: {
+            'Accept': 'application/json, text/plain',
+            'Content-Type': 'application/json;charset=UTF-8'
+          },
+          body: JSON.stringify({
+            "Username": registerData.username,
+            "Password": registerData.password,
+            "EmailAddress": registerData.emailAddress,
+            "FirstName": registerData.firstname,
+            "MiddleName": registerData.middlename,
+            "LastName": registerData.lastname
+          })
         })
-      })
+        console.log(await res.json())
+        if (res.status === 200) {
+          router.push({name: 'Inloggen'})
+        }
+        // commit('setStatus', response.status)
+      }
+      catch (e) {
+        console.log(e)
+      }
     },
 
   //  geojson related actions
