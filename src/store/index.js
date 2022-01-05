@@ -103,7 +103,7 @@ export default new Vuex.Store({
       }
     },
 
-    async register(state, registerData){
+    async register(state, registerData) {
       //todo check if these statuses are necessary
       // commit('setStatus', 'fetching')
       console.log(registerData.lastname)
@@ -134,6 +134,35 @@ export default new Vuex.Store({
       }
     },
 
+    async updateAccount({commit}, updatedUser) {
+      try {
+        let res = await fetch('http://localhost:8000/Users/update', {
+          method: 'PUT',
+          credentials: 'include',
+          headers: {
+            'Accept': 'application/json, text/plain',
+            'Content-Type': 'application/json;charset=UTF-8'
+          },
+          body: JSON.stringify({
+            //TODO remove hardcoded user id.
+            "UserId": "c8c36026-0b7f-4ef3-89de-17e767a24fb6",
+            "username": updatedUser.username,
+            "emailAddress":updatedUser.emailAddress,
+            "firstName":updatedUser.firstName,
+            "middleName":null,
+            "lastName":updatedUser.lastName,
+            "devices":updatedUser.devices
+          })
+        })
+        if (res.status === 200)
+        {
+          commit('setUser', updatedUser)
+        }
+      }
+      catch (e) {
+        console.log(e)
+      }
+    },
   //  geojson related actions
     registerDevices({state, commit})
     {

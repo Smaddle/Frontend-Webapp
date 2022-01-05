@@ -17,7 +17,6 @@ export default {
   },
   computed:{
     ...mapState({
-      geoJson: state => state.geoJson,
       daysWhenOffline: state => state.daysWhenOffline,
       markerData: state => state.markerData
     })

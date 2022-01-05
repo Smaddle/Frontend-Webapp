@@ -15,7 +15,7 @@
 
       </div>
       <b-dropdown id="dropdown-right" right class="shadow-sm account shadow-sm" variant="square account" no-caret>
-        <b-dropdown-text class="text-secondary small">Jules Immerzeel</b-dropdown-text>
+        <b-dropdown-text class="text-secondary small">{{ this.$store.state.user.firstName }} {{ this.$store.state.user.lastName }}</b-dropdown-text>
         <b-dropdown-divider/>
         <b-dropdown-item to="/account">Account</b-dropdown-item>
         <b-dropdown-divider/>
