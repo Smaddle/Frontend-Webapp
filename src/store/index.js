@@ -85,6 +85,7 @@ export default new Vuex.Store({
       try {
         let res = await fetch('http://localhost:8000/Users/login', {
           method: 'POST',
+          credentials: 'include',
           headers: {
             'Accept': 'application/json, text/plain',
             'Content-Type': 'application/json;charset=UTF-8'
@@ -144,8 +145,6 @@ export default new Vuex.Store({
             'Content-Type': 'application/json;charset=UTF-8'
           },
           body: JSON.stringify({
-            //TODO remove hardcoded user id.
-            "UserId": "c8c36026-0b7f-4ef3-89de-17e767a24fb6",
             "username": updatedUser.username,
             "emailAddress":updatedUser.emailAddress,
             "firstName":updatedUser.firstName,
