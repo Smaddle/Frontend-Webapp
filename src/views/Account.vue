@@ -28,7 +28,7 @@ export default {
   data() {
     return {
       edited: false,
-      user: { ...this.$store.state.user } //copy the value not the reference
+      user: { ...this.$store.state.user.user } //copy the value not the reference
     }
   },
 
