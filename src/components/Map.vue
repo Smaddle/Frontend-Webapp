@@ -4,7 +4,7 @@
 
 <script>
 import mapboxgl from "mapbox-gl";
-import {mapState} from "vuex";
+import { mapState } from "vuex";
 
 export default {
   name: "Map",
@@ -18,13 +18,12 @@ export default {
   computed:{
     ...mapState({
       daysWhenOffline: state => state.daysWhenOffline,
-      markerData: state => state.markerData
+      markerData: state => state.device.markerData
     })
   },
 
   methods: {
-    createMarker(marker)
-    {
+    createMarker(marker) {
       const el = document.createElement('div');
       el.className = 'smaddle';
       if (marker.properties.stolen) { el.className += ' stolen'}
@@ -40,7 +39,7 @@ export default {
       span.className = 'name'
       circle.appendChild(span)
 
-      el.addEventListener('click', () =>{
+      el.addEventListener('click', () => {
         this.$store.dispatch('setSelectedSmaddle', marker)
         this.map.flyTo({
           center: [marker.geometry.coordinates[0], marker.geometry.coordinates[1] - 0.001],
@@ -55,7 +54,7 @@ export default {
     }
   },
 
-  mounted(){
+  mounted() {
     this.$store.dispatch('registerDevices')
     mapboxgl.accessToken = 'pk.eyJ1IjoianVsZXNpIiwiYSI6ImNqdHpsOWVqZjF1aDQ0YWx6MnkwYmUxOGEifQ.Ocnsvr8g-3kI8b0fJxDLgA';
     window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
@@ -72,7 +71,7 @@ export default {
       pitch: 30 //tilts camera
     });
 
-    for (let marker of this.markerData){
+    for (let marker of this.markerData) {
       this.createMarker(marker[1].geoJson)
     }
   },

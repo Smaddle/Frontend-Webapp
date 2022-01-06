@@ -1,6 +1,6 @@
 import router from '../router'
 
-export const moduleUser = {
+export const userModule = {
     state: {
         user: null,
         loggedIn: false
