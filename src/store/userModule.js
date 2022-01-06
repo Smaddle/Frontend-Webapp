@@ -66,7 +66,7 @@ export const userModule = {
             }
         },
 
-        async updateAccount(state, updatedUser) {
+        async updateAccount({commit}, updatedUser) {
             try {
                 let res = await fetch('http://localhost:8000/Users/update', {
                     method: 'PUT',
@@ -76,8 +76,6 @@ export const userModule = {
                         'Content-Type': 'application/json;charset=UTF-8'
                     },
                     body: JSON.stringify({
-                        //TODO remove hardcoded user id.
-                        "UserId": "c8c36026-0b7f-4ef3-89de-17e767a24fb6",
                         "username": updatedUser.username,
                         "emailAddress":updatedUser.emailAddress,
                         "firstName":updatedUser.firstName,
@@ -88,6 +86,9 @@ export const userModule = {
                 })
                 if (res.status === 401) {
                     router.push({ name: 'Inloggen'})
+                }
+                else {
+                    commit('setUser', updatedUser)
                 }
             }
             catch (e) {
