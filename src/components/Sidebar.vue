@@ -10,7 +10,7 @@
       <section>
         <span>Batterij</span>
         <b-progress class="mt-2">
-          <b-progress-bar :value="currentSmaddle.properties.battery">{{currentSmaddle.properties.battery}}%</b-progress-bar>
+          <b-progress-bar :value="currentSmaddle.properties.bat.sad">{{currentSmaddle.properties.bat.sad}}%</b-progress-bar>
         </b-progress>
       </section>
       <section class="mt-4 text-center">
@@ -51,20 +51,21 @@ export default {
   },
   computed:{
     ...mapState({
-      selectedSmaddle: state => state.selectedSmaddle,
       daysWhenOffline: state => state.daysWhenOffline
     }),
+
     isOnline(){
       return Math.floor(Date.now() / 1000) - this.currentSmaddle.properties.last_updated < 86400 * this.daysWhenOffline
     }
   },
   watch:{
     // Here I wait a couple milliseconds for the sidebar to disapear before removing the contents
-    selectedSmaddle(newVal){
-      if (newVal == null){
+    selectedSmaddle(newVal) {
+      if (newVal == null) {
         this.hidden = true
         setTimeout(()=> this.currentSmaddle = newVal, 500)
-      }else{
+      }
+      else {
         this.currentSmaddle = newVal
         this.hidden = false
       }

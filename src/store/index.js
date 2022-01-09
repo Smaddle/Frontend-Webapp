@@ -11,8 +11,14 @@ export default new Vuex.Store({
   },
 
   mutations: {
-    selectSmaddle(state,smaddle) {
-      state.selectedSmaddle = smaddle
+    selectSmaddle(state, deviceToken) {
+      state.selectedSmaddle = deviceToken
+    }
+  },
+
+  getters: {
+    getSelectedSmaddle: state => {
+      return state.device.markerData.get(state.selectedSmaddle)
     }
   },
 

@@ -1,84 +1,97 @@
 export const deviceModule = {
   state: {
-    markerData: new Map([["4ea2353a-fc4d-4463-b244-1279243b4396", {
-      geoJson: {
-        type: 'Feature',
-        properties: {
-          id: 0,
-          name: 'Driewieller van Sascha',
-          last_updated: 1639405146,
-          stolen: false,
-          battery: 20,
-          DeviceToken: "4ea2353a-fc4d-4463-b244-1279243b4396"
-        },
-        geometry: {
-          type: 'Point',
-          coordinates: [5, 52]
-        }
-      },
-      marker: null
-    }]]),
-
+    map: null,
     webSocket: null,
+
+    devices: {
+      type: 'FeatureCollection',
+      features: [
+        {
+          type: 'Feature',
+          geometry: {
+            type: 'Point',
+          },
+          properties: {
+            title: 'Mapbox DC',
+            status: 'stolen',
+            deviceToken: '4ea2353a-fc4d-4463-b244-1279243b4396'
+          }
+        }]
+    }
+    },
+
+  getters: {
+    devicesStolen(state) {
+      return {type: 'FeatureCollection', features: state.devices.features.filter(device => device.properties.status === 'stolen')}
+    },
+
+    devicesNormal(state) {
+      return {type: 'FeatureCollection', features: state.devices.features.filter(device => device.properties.status === 'normal')}
+    },
+
+    devicesOffline(state) {
+      return {type: 'FeatureCollection', features: state.devices.features.filter(device => device.properties.status === 'offline')}
+    },
+
+    getDeviceTokens(state) {
+      //Todo get the list with devices from backend user model then register those via this websocket connection
+      const deviceTokens = []
+      for (let device of state.devices.features) {
+        deviceTokens.push(device.properties.deviceToken) //get all the tokens of the smaddles we want to track
+      }
+
+      return deviceTokens
+    }
   },
 
   mutations: {
-    selectSmaddle(state, smaddle) {
-      state.selectedSmaddle = smaddle
-    },
-
     setWebSocket(state, socket) {
       state.webSocket = socket
     },
 
-    //used for setting the smaddle data from backend
-    setSmaddle(state, smaddle) {
-      state.markerData.set(smaddle.properties.DeviceToken, smaddle)
+    setMap(state, map) {
+      state.map = map
     },
+
 
     //used to process the smaddle data given by DeviceApi
-    updateGeoJson(state, socketData) {
-      socketData.forEach(smaddle => {
-        state.markerData.set(smaddle.properties.Id,
-          {
-            geoJson: {
-              type: "feature",
-              properties: {
-                ...state.markerData.get(smaddle.properties.Id).geoJson.properties,
-                ...smaddle.properties
-              },
-              geometry: smaddle.geometry
-            },
-            marker: state.markerData.get(smaddle.properties.Id).marker
-          })
-        state.markerData.get(smaddle.properties.Id).marker.setLngLat(smaddle.geometry.coordinates)
+    updateDevices(state, updatedGeoJson) {
+      updatedGeoJson.features.forEach(geoJson => {
+        let index = state.devices.features.findIndex(device => device.deviceToken == geoJson.Id)
+        state.devices.features[index] = {
+          type: "feature",
+          properties: {
+            ...state.devices.features[index].properties,
+            ...geoJson.properties,
+          },
+          geometry: geoJson.geometry
+        }
       })
-    },
 
-    setMarker(state, payload) {
-      state.markerData.get(payload.id).marker = payload.marker;
-    }
+      //apparently just updating an index does not get detected as a change so this seemingly useless assignment is necessary
+      state.devices = {...state.devices}
+
+    },
   },
 
   actions: {
-    registerDevices({state, commit}) {
-      //Todo get the list with devices from backend user model then register those via this websocket connection
-      const deviceTokens = [];
-      for (let smaddle of state.markerData.values()) {
-        deviceTokens.push(smaddle.geoJson.properties.DeviceToken); //get all the tokens of the smaddles we want to track
-      }
-
+    registerDevices({state, commit, getters}) {
       let socket = new WebSocket("ws://localhost:8888")
       socket.onopen = () => socket.send(JSON.stringify({
         "action": "REGISTER",
         "instructions": [""],
-        "smaddles": deviceTokens
+        "smaddles": getters.getDeviceTokens
       }))
 
       socket.onmessage = (e) => {
-        let data = JSON.parse(e.data).features
-        commit("updateGeoJson", data)
+        let data = JSON.parse(e.data)
+        commit('updateDevices', data)
+        state.map.getSource('stolen-point').setData(getters.devicesStolen)
+        state.map.getSource('normal-point').setData(getters.devicesNormal)
+        state.map.getSource('offline-point').setData(getters.devicesOffline)
+        console.log(`stolen: ${getters.devicesStolen.features.length} normal: ${getters.devicesNormal.features.length} offline: ${getters.devicesOffline.features.length}`)
       }
+
       commit('setWebSocket', socket)
     }
   },
