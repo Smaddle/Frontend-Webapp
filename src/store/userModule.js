@@ -58,6 +58,7 @@ export const userModule = {
           body: JSON.stringify({username: loginData.username, password: loginData.password})}).then(res =>{
             if (res.status === 200){
               res.json().then(data=>{
+                commit('setDevices', data.devices)
                 commit('setUser', data)
                 commit('setRequestStatus', null)
                 resolve(data)
