@@ -22,6 +22,11 @@ export default {
     Map,
     Sidebar
   },
+  beforeMount() {
+    this.$store.dispatch('getUser').then(data=>{
+      console.log(data)
+    })
+  }
 }
 </script>
 

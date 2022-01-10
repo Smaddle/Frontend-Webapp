@@ -3,7 +3,8 @@ import router from '../router'
 export const userModule = {
   state: {
     user: null,
-    loggedIn: false
+    loggedIn: false,
+    requestStatus: null
   },
 
   mutations: {
@@ -13,6 +14,9 @@ export const userModule = {
 
     setStatus(state, value) {
       state.loggedIn = value
+    },
+    setRequestStatus(state, value) {
+      state.requestStatus = value
     }
   },
 
@@ -42,25 +46,55 @@ export const userModule = {
       }
     },
 
-    async login({commit}, loginData) {
-      try {
-        let res = await fetch('http://localhost:8000/Users/login', {
-          method: 'POST',
+    login({commit}, loginData) {
+      commit('setRequestStatus', 'fetching')
+      return new Promise((resolve,reject)=>{
+        fetch('http://localhost:8000/Users/login', {method: 'POST',
           credentials: 'include',
           headers: {
             'Accept': 'application/json, text/plain',
             'Content-Type': 'application/json;charset=UTF-8'
           },
-          body: JSON.stringify({username: loginData.username, password: loginData.password})
+          body: JSON.stringify({username: loginData.username, password: loginData.password})}).then(res =>{
+            if (res.status === 200){
+              res.json().then(data=>{
+                commit('setUser', data)
+                commit('setRequestStatus', null)
+                resolve(data)
+              })
+            }else{
+              commit('setRequestStatus', res.status)
+              commit('setUser', null)
+              reject(res)
+            }
+        }).catch(e=>{
+          commit('setUser', null)
+          console.log(e)
         })
-        if (res.status === 200) {
-          commit('setUser', await res.json())
-          commit('setStatus', true)
-          await router.push({name: 'Home'})
-        }
-      } catch (e) {
-        console.log(e)
-      }
+      })
+    },
+
+    getUser({commit}){
+      commit("setRequestStatus", 'fetching');
+      return new Promise((resolve,reject) =>{
+        fetch('http://localhost:8000/Users', {method: "GET", credentials: "include"})
+            .then(res => {
+              if (res.status === 200){
+                res.json().then(data =>{
+                  commit('setUser', data[0]);
+                  commit('setRequestStatus', null)
+                })
+              }else{
+                commit('setRequestStatus', res.status)
+                commit('setUser', null)
+                reject(res)
+              }
+            }).catch(error =>{
+              commit('setRequestStatus', '?')
+              commit('setUser', null)
+              reject(error);
+        })
+      })
     },
 
     async updateAccount({commit}, updatedUser) {
