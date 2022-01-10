@@ -83,6 +83,7 @@ export const userModule = {
                 res.json().then(data =>{
                   commit('setUser', data[0]);
                   commit('setRequestStatus', null)
+                  resolve(data[0])
                 })
               }else{
                 commit('setRequestStatus', res.status)
