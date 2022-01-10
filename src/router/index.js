@@ -67,11 +67,18 @@ const router = new VueRouter({
 })
 
 router.beforeEach((to, from, next) => {
-  if(!(to.name == "Inloggen" || to.name == "Account Aanmaken") && !store.state.user.loggedIn) {
-    next({name: 'Inloggen'})
-  }
-  else {
+  if (!(to.name == "Inloggen" || to.name == "Account Aanmaken") && store.state.user.user === null){
+    store.dispatch('getUser').then(() =>{
+      next()
+    }).catch(()=>{
+      next({name: 'Inloggen'})
+    })
+
+  }else{
     next()
   }
+  // if (to.path === '/auth' && store.state.user.user){
+  //   next({path: '/'})
+  // }
 })
 export default router

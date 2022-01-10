@@ -1,0 +1,14 @@
+.btn-primary{
+  background-color: var(--primary) !important;
+  color: white;
+  border: none;
+}
+
+.btn-outline-primary{
+  border-color: var(--primary);
+  color: var(--primary);
+  &:hover {
+    background-color: var(--primary) !important;
+    border-color: var(--primary);
+  }
+}
