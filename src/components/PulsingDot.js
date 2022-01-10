@@ -1,3 +1,6 @@
+import store from '../store/index'
+
+
 export function createPulsingDot(map, status) {
   let color = null
   switch (status)
@@ -87,7 +90,13 @@ export function createLayer(map, status, dataPoints) {
     });
 
     map.on('click', `${status}-layer`, (e) => {
-      console.log(e.features[0].properties.status)
+      store.dispatch("setSelectedSmaddle", e.features[0])
+      map.flyTo({
+        center: [e.features[0].geometry.coordinates[0], e.features[0].geometry.coordinates[1]],
+        zoom: 16,
+        duration: 3000,
+        curve: 1
+      });
     })
   }
 }

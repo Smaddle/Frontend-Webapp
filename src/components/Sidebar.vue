@@ -25,7 +25,7 @@
           </b-col>
           <b-col>
             <h2><b-icon icon="arrow-bar-up"/></h2>
-            <span>5 m</span>
+            <span>{{currentSmaddle.geometry.alt}} m</span>
           </b-col>
         </b-row>
       </section>
@@ -50,9 +50,7 @@ export default {
     }
   },
   computed:{
-    ...mapState({
-      daysWhenOffline: state => state.daysWhenOffline
-    }),
+    ...mapState(['selectedSmaddle', 'daysWhenOffline']),
 
     isOnline(){
       return Math.floor(Date.now() / 1000) - this.currentSmaddle.properties.last_updated < 86400 * this.daysWhenOffline

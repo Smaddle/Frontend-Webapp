@@ -12,7 +12,11 @@ export const deviceModule = {
             type: 'Point',
           },
           properties: {
-            title: 'Mapbox DC',
+            name: 'Driewieller van Sascha',
+            last_updated: 1639405146,
+            stolen: false,
+            battery: 20,
+            DeviceToken: "4ea2353a-fc4d-4463-b244-1279243b4396",
             status: 'stolen',
             deviceToken: '4ea2353a-fc4d-4463-b244-1279243b4396'
           }
@@ -57,6 +61,7 @@ export const deviceModule = {
     //used to process the smaddle data given by DeviceApi
     updateDevices(state, updatedGeoJson) {
       updatedGeoJson.features.forEach(geoJson => {
+        console.log(geoJson.geometry)
         let index = state.devices.features.findIndex(device => device.deviceToken == geoJson.Id)
         state.devices.features[index] = {
           type: "feature",
@@ -89,7 +94,8 @@ export const deviceModule = {
         state.map.getSource('stolen-point').setData(getters.devicesStolen)
         state.map.getSource('normal-point').setData(getters.devicesNormal)
         state.map.getSource('offline-point').setData(getters.devicesOffline)
-        console.log(`stolen: ${getters.devicesStolen.features.length} normal: ${getters.devicesNormal.features.length} offline: ${getters.devicesOffline.features.length}`)
+        // console.log(data)
+        // console.log(`stolen: ${getters.devicesStolen.features.length} normal: ${getters.devicesNormal.features.length} offline: ${getters.devicesOffline.features.length}`)
       }
 
       commit('setWebSocket', socket)
