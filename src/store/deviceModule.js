@@ -5,22 +5,7 @@ export const deviceModule = {
 
     devices: {
       type: 'FeatureCollection',
-      features: [
-        {
-          type: 'Feature',
-          geometry: {
-            type: 'Point',
-          },
-          properties: {
-            name: 'Driewieller van Sascha',
-            last_updated: 1639405146,
-            stolen: false,
-            battery: 20,
-            DeviceToken: "4ea2353a-fc4d-4463-b244-1279243b4396",
-            status: 'stolen',
-            deviceToken: '4ea2353a-fc4d-4463-b244-1279243b4396'
-          }
-        }]
+      features: []
     }
     },
 
@@ -38,7 +23,6 @@ export const deviceModule = {
     },
 
     getDeviceTokens(state) {
-      //Todo get the list with devices from backend user model then register those via this websocket connection
       const deviceTokens = []
       for (let device of state.devices.features) {
         deviceTokens.push(device.properties.deviceToken) //get all the tokens of the smaddles we want to track
@@ -57,11 +41,31 @@ export const deviceModule = {
       state.map = map
     },
 
+    setDevices(state, devices) {
+      devices.forEach(device => {
+        console.log(device.name)
+        state.devices.features.push(
+          {
+            type: 'Feature',
+            geometry: {
+              type: 'Point',
+            },
+            properties: {
+              name: device.name,
+              last_updated: 1639405146,
+              stolen: false,
+              battery: 20,
+              status: 'stolen',
+              deviceToken: device.id
+            }
+          }
+        )
+      })
+    },
 
     //used to process the smaddle data given by DeviceApi
     updateDevices(state, updatedGeoJson) {
       updatedGeoJson.features.forEach(geoJson => {
-        console.log(geoJson.geometry)
         let index = state.devices.features.findIndex(device => device.deviceToken == geoJson.Id)
         state.devices.features[index] = {
           type: "feature",
@@ -94,8 +98,6 @@ export const deviceModule = {
         state.map.getSource('stolen-point').setData(getters.devicesStolen)
         state.map.getSource('normal-point').setData(getters.devicesNormal)
         state.map.getSource('offline-point').setData(getters.devicesOffline)
-        // console.log(data)
-        // console.log(`stolen: ${getters.devicesStolen.features.length} normal: ${getters.devicesNormal.features.length} offline: ${getters.devicesOffline.features.length}`)
       }
 
       commit('setWebSocket', socket)

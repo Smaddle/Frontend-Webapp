@@ -54,7 +54,9 @@ export const userModule = {
           body: JSON.stringify({username: loginData.username, password: loginData.password})
         })
         if (res.status === 200) {
-          commit('setUser', await res.json())
+          res = await res.json()
+          commit('setDevices', res.devices)
+          commit('setUser', res)
           commit('setStatus', true)
           await router.push({name: 'Home'})
         }
