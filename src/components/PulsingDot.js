@@ -90,7 +90,7 @@ export function createLayer(map, status, dataPoints) {
     });
 
     map.on('click', `${status}-layer`, (e) => {
-      store.dispatch("setSelectedSmaddle", e.features[0])
+      store.dispatch("setSelectedDevice", e.features[0].properties.deviceToken)
       map.flyTo({
         center: [e.features[0].geometry.coordinates[0], e.features[0].geometry.coordinates[1]],
         zoom: 16,

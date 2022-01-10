@@ -7,8 +7,8 @@
     </div>
 
     <b-row v-if="devices !== null"  cols="1" cols-md="2" cols-lg="3" cols-xl="4">
-      <b-col v-for="device in devices.keys()" :key="device">
-        <DeviceButton :device="devices.get(device)"/>
+      <b-col v-for="(device) in devices" :key="device.id">
+        <DeviceButton :device="device"/>
       </b-col>
     </b-row>
   </b-container>
@@ -41,7 +41,7 @@ export default {
   },
   computed:{
     ...mapState({
-      devices: state => state.device.devices
+      devices: state => state.device.devicesList
     })
   },
   beforeMount() {

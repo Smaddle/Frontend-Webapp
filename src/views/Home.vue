@@ -31,8 +31,8 @@ export default {
   mounted() {
     this.$store.dispatch('getUser').then((data)=>{
       console.log('user',data)
-      this.$store.dispatch('getDevices').then((devicesMap)=>{
-        console.log('devices', devicesMap)
+      this.$store.dispatch('getDevices').then((devices)=>{
+        console.log('devices', devices)
       })
     }).catch(()=>{
       this.$router.push('/auth')
@@ -72,7 +72,7 @@ export default {
     }
 
     .color{
-      color: var(--primary);
+      color: #007BFFFF;
       &.stolen{color: var(--danger)}
       &.offline{color: var(--orange)}
     }

@@ -2,26 +2,11 @@ export const deviceModule = {
   state: {
     map: null,
     webSocket: null,
+    selectedDevice: null,
     devices: {
       type: 'FeatureCollection',
-      features: [
-        {
-          type: 'Feature',
-          geometry: {
-            type: 'Point',
-          },
-          properties: {
-            name: 'Driewieller van Sascha',
-            last_updated: 1639405146,
-            stolen: false,
-            battery: 20,
-            DeviceToken: "4ea2353a-fc4d-4463-b244-1279243b4396",
-            status: 'stolen',
-            deviceToken: '4ea2353a-fc4d-4463-b244-1279243b4396'
-          }
-        }]
+      features: []
     },
-    devicesList: [],
     requestStatus: null
     },
 
@@ -45,6 +30,14 @@ export const deviceModule = {
       }
 
       return deviceTokens
+    },
+
+    getSelectedDevice(state){
+      console.log(state.devices.features)
+
+      return state.devices.features.filter(device=>{
+        device.deviceToken === state.selectedDevice
+      })[0]
     }
   },
 
@@ -52,12 +45,13 @@ export const deviceModule = {
     setWebSocket(state, socket) {
       state.webSocket = socket
     },
-
     setMap(state, map) {
       state.map = map
     },
-
     setDevices(state, devices) {
+      if (devices === null){
+        state.devices.features = [];
+      }
       devices.forEach(device => {
         console.log(device.name)
         state.devices.features.push(
@@ -80,6 +74,9 @@ export const deviceModule = {
     },
     setDeviceRequestStatus(state, status){
       state.requestStatus = status
+    },
+    setSelectedDevice(state, deviceToken) {
+      state.selectedDevice = deviceToken
     },
 
     //used to process the smaddle data given by DeviceApi
@@ -160,6 +157,12 @@ export const deviceModule = {
           reject(err)
         })
       })
+    },
+    clearDevices({commit}){
+      commit('setDevices', null)
+    },
+    setSelectedDevice({commit}, deviceToken){
+      commit('setSelectedDevice',deviceToken)
     }
   },
 }
