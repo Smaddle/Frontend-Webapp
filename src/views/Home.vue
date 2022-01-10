@@ -16,16 +16,33 @@
 <script>
 import Map from "../components/Map";
 import Sidebar  from "../components/Sidebar"
+import {mapState} from "vuex";
 export default {
   name: 'Home',
   components: {
     Map,
     Sidebar
   },
-  beforeMount() {
-    this.$store.dispatch('getUser').then(data=>{
-      console.log(data)
+  computed:{
+    ...mapState({
+      user: state => state.user.user
     })
+  },
+  mounted() {
+    this.$store.dispatch('getUser').then((data)=>{
+      console.log('user',data)
+      this.$store.dispatch('getDevices').then((devicesMap)=>{
+        console.log('devices', devicesMap)
+      })
+    }).catch(()=>{
+      this.$router.push('/auth')
+    })
+    // this.$store.dispatch('getUser').then(data=>{
+    //   console.log('user',data)
+    //   this.$store.dispatch('getDevices').then(deviceMap =>{
+    //     console.log(deviceMap)
+    //   })
+    // })
   }
 }
 </script>

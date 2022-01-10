@@ -7,7 +7,7 @@ import Devices from "@/views/Devices/Devices";
 import Login from "@/views/Auth/Login";
 import Register from "@/views/Auth/Register";
 import Device from "@/views/Devices/Device";
-import store from "../store/index.js";
+// import store from "../store/index.js";
 
 Vue.use(VueRouter)
 
@@ -64,21 +64,5 @@ const routes = [
 const router = new VueRouter({
   mode: 'history',
   routes
-})
-
-router.beforeEach((to, from, next) => {
-  if (!(to.name == "Inloggen" || to.name == "Account Aanmaken") && store.state.user.user === null){
-    store.dispatch('getUser').then(() =>{
-      next()
-    }).catch(()=>{
-      next({name: 'Inloggen'})
-    })
-
-  }else{
-    next()
-  }
-  // if (to.path === '/auth' && store.state.user.user){
-  //   next({path: '/'})
-  // }
 })
 export default router

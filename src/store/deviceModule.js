@@ -2,11 +2,27 @@ export const deviceModule = {
   state: {
     map: null,
     webSocket: null,
-
     devices: {
       type: 'FeatureCollection',
-      features: []
-    }
+      features: [
+        {
+          type: 'Feature',
+          geometry: {
+            type: 'Point',
+          },
+          properties: {
+            name: 'Driewieller van Sascha',
+            last_updated: 1639405146,
+            stolen: false,
+            battery: 20,
+            DeviceToken: "4ea2353a-fc4d-4463-b244-1279243b4396",
+            status: 'stolen',
+            deviceToken: '4ea2353a-fc4d-4463-b244-1279243b4396'
+          }
+        }]
+    },
+    devicesList: [],
+    requestStatus: null
     },
 
   getters: {
@@ -45,22 +61,25 @@ export const deviceModule = {
       devices.forEach(device => {
         console.log(device.name)
         state.devices.features.push(
-          {
-            type: 'Feature',
-            geometry: {
-              type: 'Point',
-            },
-            properties: {
-              name: device.name,
-              last_updated: 1639405146,
-              stolen: false,
-              battery: 20,
-              status: 'stolen',
-              deviceToken: device.id
+            {
+              type: 'Feature',
+              geometry: {
+                type: 'Point',
+              },
+              properties: {
+                name: device.name,
+                last_updated: 1639405146,
+                stolen: false,
+                battery: 20,
+                status: 'stolen',
+                deviceToken: device.id
+              }
             }
-          }
         )
       })
+    },
+    setDeviceRequestStatus(state, status){
+      state.requestStatus = status
     },
 
     //used to process the smaddle data given by DeviceApi
@@ -85,7 +104,7 @@ export const deviceModule = {
 
   actions: {
     registerDevices({state, commit, getters}) {
-      let socket = new WebSocket("ws://localhost:8888")
+      let socket = new WebSocket("ws://localhost:3000")
       socket.onopen = () => socket.send(JSON.stringify({
         "action": "REGISTER",
         "instructions": [""],
@@ -101,6 +120,46 @@ export const deviceModule = {
       }
 
       commit('setWebSocket', socket)
+    },
+    createDevice({commit}, name){
+      return new Promise((resolve, reject)=>{
+        commit('setDeviceRequestStatus', 'fetching')
+        fetch('http://localhost:8000/devices/create',{method: "POST", credentials: "include", body:JSON.stringify({name: name})}).then(res=>{
+          if(res.status === 200){
+            res.json().then(device => {
+              commit('setDeviceRequestStatus', null)
+              resolve(device)
+            })
+          }else{
+            commit('setDeviceRequestStatus', res.status)
+            reject(res)
+          }
+        }).catch(err =>{
+          commit('setDeviceRequestStatus', null)
+          reject(err)
+        })
+      })
+    },
+    getDevices({commit,state}){
+      return new Promise((resolve,reject)=>{
+        commit('setDeviceRequestStatus', 'fetching')
+        fetch('http://localhost:8000/devices', {method: "GET", credentials:"include"}).then(res=>{
+          if(res.status === 200){
+            res.json().then((devicesArray)=>{
+              commit('setDeviceRequestStatus', null)
+              commit('setDevices',devicesArray)
+              resolve(state.devicesList)
+            })
+
+          }else{
+            commit('setDeviceRequestStatus', res.status)
+            reject(res)
+          }
+        }).catch(err => {
+          commit('setDeviceRequestStatus', null)
+          reject(err)
+        })
+      })
     }
   },
 }

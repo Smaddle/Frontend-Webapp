@@ -6,8 +6,10 @@
       <b-button variant="none" class="text-primary font-weight-bold add" v-b-modal.modal-add-smaddle><b-icon icon="plus-circle"/></b-button>
     </div>
 
-    <b-row cols="1" cols-md="2" cols-lg="3" cols-xl="4">
-      <b-col v-for="(device,index) in devices" :key="index"><DeviceButton :device="device"/></b-col>
+    <b-row v-if="devices !== null"  cols="1" cols-md="2" cols-lg="3" cols-xl="4">
+      <b-col v-for="device in devices.keys()" :key="device">
+        <DeviceButton :device="devices.get(device)"/>
+      </b-col>
     </b-row>
   </b-container>
   <router-view/>
@@ -15,11 +17,8 @@
   <b-modal id="modal-add-smaddle" title="Smaddle Toevoegen">
     <b-form id="linkDevice-form">
     <p class="my-4">Hier kan je een smaddle toeveogen aan jouw account.</p>
-      <b-form-group label="Token">
-        <b-form-input required placeholder="xxx-xxx-xxx-xxx"/>
-      </b-form-group>
-      <b-form-group label="Naam">
-        <b-form-input required/>
+      <b-form-group label="ID">
+        <b-form-input required placeholder="xxx-xxx-xxx-xxx" v-model="linkDeviceId"/>
       </b-form-group>
     </b-form>
     <template #modal-footer>
@@ -35,9 +34,19 @@ import {mapState} from "vuex";
 export default {
   name: "Devices",
   components: {DeviceButton},
+  data(){
+    return{
+      linkDeviceId: ''
+    }
+  },
   computed:{
     ...mapState({
-      devices: state => state.markerData
+      devices: state => state.device.devices
+    })
+  },
+  beforeMount() {
+    this.$store.dispatch('getDevices').then((devices)=>{
+      console.log('devices', devices)
     })
   },
   methods:{
