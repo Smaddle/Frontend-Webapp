@@ -11,12 +11,13 @@ export default {
   name: "Map",
   data() {
     return {
+      loaded: false,
       mapType: window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark-v10' :'light-v10',
     }
   },
 
   computed: {
-    ...mapState(['device', 'user']),
+    ...mapState(['device', 'user', 'maploaded']),
     ...mapGetters(['devicesStolen', 'devicesNormal', 'devicesOffline']),
   },
 
@@ -26,7 +27,7 @@ export default {
       createLayer(this.device.map, 'normal', this.devicesNormal)
       createLayer(this.device.map, 'offline', this.devicesOffline)
     },
-    ...mapMutations(['setMap']),
+    ...mapMutations(['setMap', 'setMapStatus']),
     ...mapActions(['registerDevices'])
   },
 
@@ -46,11 +47,17 @@ export default {
     }))
 
     this.device.map.on('styledata', () => {
+      console.log(this.devicesStolen.features.length)
       this.setMarkerLayer()
     })
 
+    //mounted is called everytime pages are switched which would cause reregistering devices everytime
+    //That's why the map loaded state is tracked so only first time devices are registered.
     this.device.map.on('load', () => {
-      this.registerDevices()
+      if (this.$store.state.mapLoaded == false) {
+        this.registerDevices()
+        this.setMapStatus(true)
+      }
     })
   },
 };
