@@ -32,12 +32,9 @@ export const deviceModule = {
       return deviceTokens
     },
 
-    getSelectedDevice(state){
-      console.log(state.devices.features)
-
-      return state.devices.features.filter(device=>{
-        device.deviceToken === state.selectedDevice
-      })[0]
+    getSelectedDevice(state) {
+      console.log(state.devices.features.filter(device => device.properties.deviceToken == state.selectedDevice))
+      return state.devices.features.filter(device => device.properties.deviceToken == state.selectedDevice)[0]
     }
   },
 
@@ -162,7 +159,7 @@ export const deviceModule = {
       commit('setDevices', null)
     },
     setSelectedDevice({commit}, deviceToken){
-      commit('setSelectedDevice',deviceToken)
+      setTimeout(() => commit('setSelectedDevice',deviceToken), 500)
     }
   },
 }
