@@ -1,5 +1,5 @@
 .mapboxgl-marker.smaddle{
-  --color: var(--primary);
+  --color: #007BFFFF !important;
   white-space: nowrap;
   display: flex;
   justify-content: center;
@@ -15,7 +15,7 @@
     border-radius: 50%;
     display: flex;
     justify-content: center;
-    align-items: end;
+    align-items: flex-end;
   }
   .ringring {
     border: 3px solid var(--color);

@@ -1,8 +1,8 @@
 <template>
-<b-button variant="device" :to="`/devices/${device.properties.id}`" exact-active-class="active" @click="$scrollTo('.device-overview', 500)">
+<b-button variant="device" :to="`/devices/${device.id}`" exact-active-class="active" @click="$scrollTo('.device-overview', 500)">
   <header>
-    <div class="status" :class="isOnline ? 'online' : 'offline'" v-b-tooltip.hover.html="`Tracker is <strong>${isOnline ? 'online' : 'offline'}</strong>`"/>
-    <h3 class="mb-0 ml-3">{{device.properties.name}}</h3>
+<!--    <div class="status" :class="isOnline ? 'online' : 'offline'" v-b-tooltip.hover.html="`Tracker is <strong>${isOnline ? 'online' : 'offline'}</strong>`"/>-->
+    <h3 class="mb-0 ml-3">{{device.name}}</h3>
   </header>
 </b-button>
 </template>

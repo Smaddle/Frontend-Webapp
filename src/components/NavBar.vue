@@ -15,7 +15,7 @@
 
       </div>
       <b-dropdown id="dropdown-right" right class="shadow-sm account shadow-sm" variant="square account" no-caret>
-        <b-dropdown-text class="text-secondary small">{{ this.$store.state.user.firstName }} {{ this.$store.state.user.lastName }}</b-dropdown-text>
+        <b-dropdown-text v-if="user !== null" class="text-secondary small">{{ user.firstName }} {{ user.lastName }}</b-dropdown-text>
         <b-dropdown-divider/>
         <b-dropdown-item to="/account">Account</b-dropdown-item>
         <b-dropdown-divider/>
@@ -26,6 +26,8 @@
 </template>
 
 <script>
+import {mapState} from "vuex";
+
 export default {
   name: "NavBar",
   data(){
@@ -40,6 +42,11 @@ export default {
       //Place code here to search
       alert(this.searchInput);
     }
+  },
+  computed:{
+    ...mapState({
+      user: state => state.user.user
+    })
   }
 }
 </script>

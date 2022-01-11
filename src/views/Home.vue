@@ -16,12 +16,34 @@
 <script>
 import Map from "../components/Map";
 import Sidebar  from "../components/Sidebar"
+import {mapState} from "vuex";
 export default {
   name: 'Home',
   components: {
     Map,
     Sidebar
   },
+  computed:{
+    ...mapState({
+      user: state => state.user.user
+    })
+  },
+  mounted() {
+    this.$store.dispatch('getUser').then((data)=>{
+      console.log('user',data)
+      this.$store.dispatch('getDevices').then((devices)=>{
+        console.log('devices', devices)
+      })
+    }).catch(()=>{
+      this.$router.push('/auth')
+    })
+    // this.$store.dispatch('getUser').then(data=>{
+    //   console.log('user',data)
+    //   this.$store.dispatch('getDevices').then(deviceMap =>{
+    //     console.log(deviceMap)
+    //   })
+    // })
+  }
 }
 </script>
 
@@ -50,7 +72,7 @@ export default {
     }
 
     .color{
-      color: var(--primary);
+      color: #007BFFFF;
       &.stolen{color: var(--danger)}
       &.offline{color: var(--orange)}
     }

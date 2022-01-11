@@ -10,28 +10,28 @@
       <section>
         <span>Batterij</span>
         <b-progress class="mt-2">
-          <b-progress-bar :value="currentSmaddle.properties.battery">{{currentSmaddle.properties.battery}}%</b-progress-bar>
+          <b-progress-bar :value="currentSmaddle.properties.bat.sad">{{currentSmaddle.properties.bat.sad}}%</b-progress-bar>
         </b-progress>
       </section>
       <section class="mt-4 text-center">
         <b-row>
           <b-col>
             <h2><b-icon icon="thermometer-half"/></h2>
-            <span>18 °C</span>
+            <span>{{currentSmaddle.properties.imu.temp}} °C</span>
           </b-col>
           <b-col>
             <h2><b-icon icon="bicycle"/></h2>
-            <span>22.5 km/u</span>
+            <span>{{currentSmaddle.properties.spd}} km/u</span>
           </b-col>
           <b-col>
             <h2><b-icon icon="arrow-bar-up"/></h2>
-            <span>5 m</span>
+            <span>{{currentSmaddle.geometry.coordinates[2]}} m</span>
           </b-col>
         </b-row>
       </section>
       <section class="mt-4 d-flex justify-content-between">
         <b-button variant="none" class="text-primary">Meer informatie</b-button>
-        <b-button class="sidebar-close" variant="icon" @click="$store.dispatch('setSelectedSmaddle', null)"><b-icon icon="x"/></b-button>
+        <b-button class="sidebar-close" variant="icon" @click="hideSideBar"><b-icon icon="x"/></b-button>
       </section>
     </div>
 
@@ -39,33 +39,38 @@
 </template>
 
 <script>
-import {mapState} from "vuex";
+import {mapGetters, mapState} from "vuex";
 
 export default {
   name: "Sidebar",
   data(){
     return{
-      currentSmaddle: null,
       hidden: true
     }
   },
   computed:{
-    ...mapState({
-      selectedSmaddle: state => state.selectedSmaddle,
-      daysWhenOffline: state => state.daysWhenOffline
-    }),
+    ...mapState(['selectedDevice', 'daysWhenOffline']),
+    ...mapGetters({currentSmaddle:'getSelectedDevice'}),
+
     isOnline(){
       return Math.floor(Date.now() / 1000) - this.currentSmaddle.properties.last_updated < 86400 * this.daysWhenOffline
     }
   },
+
+  methods: {
+    hideSideBar() {
+      this.hidden = true
+      this.$store.dispatch('setSelectedDevice', null)
+    }
+  },
+
   watch:{
     // Here I wait a couple milliseconds for the sidebar to disapear before removing the contents
-    selectedSmaddle(newVal){
-      if (newVal == null){
+    currentSmaddle(newVal) {
+      if (newVal == null) {
         this.hidden = true
-        setTimeout(()=> this.currentSmaddle = newVal, 500)
-      }else{
-        this.currentSmaddle = newVal
+      }
+      else {
         this.hidden = false
       }
     }
