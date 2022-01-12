@@ -16,7 +16,7 @@
 
   <b-modal id="modal-add-smaddle" title="Smaddle Toevoegen">
     <b-form id="linkDevice-form">
-    <p class="my-4">Hier kan je een smaddle toeveogen aan jouw account.</p>
+    <p class="my-4">Hier kan je een smaddle toevoegen aan jouw account.</p>
       <b-form-group label="ID">
         <b-form-input required placeholder="xxx-xxx-xxx-xxx" v-model="linkDeviceId"/>
       </b-form-group>
@@ -48,7 +48,7 @@ export default {
     this.$store.dispatch('getDevices').then((devices)=>{
       console.log('devices', devices)
     })
-  },
+   },
   methods:{
     linkDevice(e){
       e.preventDefault();

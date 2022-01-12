@@ -32,12 +32,8 @@ export const deviceModule = {
       return deviceTokens
     },
 
-    getSelectedDevice(state){
-      console.log(state.devices.features)
-
-      return state.devices.features.filter(device=>{
-        device.deviceToken === state.selectedDevice
-      })[0]
+    getSelectedDevice(state) {
+      return state.devices.features.filter(device => device.properties.deviceToken == state.selectedDevice)[0]
     }
   },
 
@@ -53,7 +49,6 @@ export const deviceModule = {
         state.devices.features = [];
       }
       devices.forEach(device => {
-        console.log(device.name)
         state.devices.features.push(
             {
               type: 'Feature',
@@ -138,31 +133,36 @@ export const deviceModule = {
       })
     },
     getDevices({commit,state}){
-      return new Promise((resolve,reject)=>{
-        commit('setDeviceRequestStatus', 'fetching')
-        fetch('http://localhost:8000/devices', {method: "GET", credentials:"include"}).then(res=>{
-          if(res.status === 200){
-            res.json().then((devicesArray)=>{
-              commit('setDeviceRequestStatus', null)
-              commit('setDevices',devicesArray)
-              resolve(state.devicesList)
-            })
+      return new Promise((resolve,reject)=> {
+        if (state.devices.features.length == 0) {
+          commit('setDeviceRequestStatus', 'fetching')
+          fetch('http://localhost:8000/devices', {method: "GET", credentials: "include"}).then(res => {
+            if (res.status === 200) {
+              res.json().then((devicesArray) => {
+                commit('setDeviceRequestStatus', null)
+                commit('setDevices', devicesArray)
+                resolve(state.devicesList)
+              })
 
-          }else{
-            commit('setDeviceRequestStatus', res.status)
-            reject(res)
-          }
-        }).catch(err => {
-          commit('setDeviceRequestStatus', null)
-          reject(err)
-        })
+            } else {
+              commit('setDeviceRequestStatus', res.status)
+              reject(res)
+            }
+          }).catch(err => {
+            commit('setDeviceRequestStatus', null)
+            reject(err)
+          })
+        }
+        else {
+          console.log('no need to fetch')
+        }
       })
     },
     clearDevices({commit}){
       commit('setDevices', null)
     },
     setSelectedDevice({commit}, deviceToken){
-      commit('setSelectedDevice',deviceToken)
+      setTimeout(() => commit('setSelectedDevice',deviceToken), 500)
     }
   },
 }
