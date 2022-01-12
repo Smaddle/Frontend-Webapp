@@ -90,13 +90,14 @@ export function createLayer(map, status, dataPoints) {
     });
 
     map.on('click', `${status}-layer`, (e) => {
-      store.dispatch("setSelectedDevice", e.features[0].properties.deviceToken)
+      store.commit('setSelectedDevice', e.features[0].properties.deviceToken)
       map.flyTo({
         center: [e.features[0].geometry.coordinates[0], e.features[0].geometry.coordinates[1]],
         zoom: 16,
         duration: 3000,
         curve: 1
       });
+      console.log(store.getters.getSelectedDevice)
     })
   }
 }

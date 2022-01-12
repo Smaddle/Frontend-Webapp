@@ -12,7 +12,6 @@ export const deviceModule = {
 
   getters: {
     devicesStolen(state) {
-      console.log(state.devices.features.filter(device => device.properties.status === 'stolen' && device.geometry.coordinates != undefined))
       return {type: 'FeatureCollection', features: state.devices.features.filter(device => device.properties.status === 'stolen' && device.geometry.coordinates != undefined)}
     },
 
@@ -33,12 +32,8 @@ export const deviceModule = {
       return deviceTokens
     },
 
-    getSelectedDevice(state){
-      console.log(state.devices.features)
-
-      return state.devices.features.filter(device=>{
-        device.deviceToken === state.selectedDevice
-      })[0]
+    getSelectedDevice(state) {
+      return state.devices.features.filter(device => device.properties.deviceToken == state.selectedDevice)[0]
     }
   },
 
@@ -79,6 +74,7 @@ export const deviceModule = {
       state.requestStatus = status
     },
     setSelectedDevice(state, deviceToken) {
+      console.log(deviceToken)
       state.selectedDevice = deviceToken
     },
 
