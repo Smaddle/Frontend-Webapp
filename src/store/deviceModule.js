@@ -163,6 +163,22 @@ export const deviceModule = {
     },
     setSelectedDevice({commit}, deviceToken){
       setTimeout(() => commit('setSelectedDevice',deviceToken), 500)
+    },
+    async linkDevice(deviceToken){
+      let res = await fetch('http://localhost:8000/devices/linkdevice',
+        {method: "POST", credentials: "include", body:JSON.stringify({id: deviceToken})})
+      if(res.status === 200) {
+        console.log(res.json())
+      }
+      else {
+        console.log(res.status)
+      }
     }
   },
 }
+//
+// {
+//   "id": "677d8449-a357-47ed-88af-edd5fde838c5",
+//   "deviceToken": "a03bfdc1-8602-49c2-94bf-8649a6d88ba8",
+//   "name": "LinkTest1"
+// }

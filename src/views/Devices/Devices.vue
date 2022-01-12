@@ -14,16 +14,14 @@
   </b-container>
   <router-view/>
 
-  <b-modal id="modal-add-smaddle" title="Smaddle Toevoegen">
-    <b-form id="linkDevice-form">
+  <b-modal id="modal-add-smaddle" title="Smaddle Toevoegen" @ok="linkDevice">
+    <b-form id="linkDevice-form" @submit="linkDevice">
     <p class="my-4">Hier kan je een smaddle toevoegen aan jouw account.</p>
       <b-form-group label="ID">
         <b-form-input required placeholder="xxx-xxx-xxx-xxx" v-model="linkDeviceId"/>
       </b-form-group>
     </b-form>
-    <template #modal-footer>
-      <b-button variant="primary">Toevoegen</b-button>
-    </template>
+
   </b-modal>
 </div>
 </template>
@@ -52,6 +50,7 @@ export default {
   methods:{
     linkDevice(e){
       e.preventDefault();
+      console.log(this.linkDeviceId)
     }
   }
 }
