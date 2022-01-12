@@ -7,13 +7,6 @@
       <b-icon icon="map-fill"></b-icon>
     </b-button>
     <div class="d-flex">
-      <div class="d-flex align-items-center mr-3 shadow-sm search-wrapper" :class="{hidden: searchHidden}">
-        <b-button variant="square" class="search-button" @click="searchHidden = !searchHidden"><b-icon :icon="searchHidden ? 'search' : 'x'"/></b-button>
-        <b-form @submit="searchSubmit">
-          <b-form-input class="search-box" placeholder="Wat zoek je?" v-model="searchInput"></b-form-input>
-        </b-form>
-
-      </div>
       <b-dropdown id="dropdown-right" right class="shadow-sm account shadow-sm" variant="square account" no-caret>
         <b-dropdown-text v-if="user !== null" class="text-secondary small">{{ user.firstName }} {{ user.lastName }}</b-dropdown-text>
         <b-dropdown-divider/>
@@ -30,19 +23,6 @@ import {mapState} from "vuex";
 
 export default {
   name: "NavBar",
-  data(){
-    return{
-      searchHidden: true,
-      searchInput: ''
-    }
-  },
-  methods:{
-    searchSubmit(e){
-      e.preventDefault()
-      //Place code here to search
-      alert(this.searchInput);
-    }
-  },
   computed:{
     ...mapState({
       user: state => state.user.user
@@ -63,39 +43,6 @@ export default {
     display: flex;
     justify-content: space-between;
   }
-  .search-wrapper{
-    .search-box{
-      height: 50px;
-      border-radius: 0 8px 8px 0;
-      border: none;
-      background-color: var(--background-secondary);
-      color: var(--text-primary);
-      max-width: 150px;
-      transition: .5s;
-      padding: 0.375rem 0.75rem;
-      overflow-y: hidden;
-    }
-    @media (min-width: 768px) {
-      .search-box{
-        max-width: 300px;
-      }
-    }
-    .search-button{
-      border-radius: 8px 0 0 8px !important;
-      transition: .5s;
-    }
-    &.hidden{
-      .search-box{
-        max-width: 0;
-        padding: 0.375rem 0;
-      }
-      .search-button{
-        border-radius: 8px !important;
-      }
-
-    }
-  }
-
 </style>
 <style lang="scss">
   /* This component is rendered later, so that's why it is not scoped */

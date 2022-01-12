@@ -6,13 +6,9 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    mapLoaded: false
   },
 
   mutations: {
-    setMapStatus(state, status){
-      state.mapLoaded = status
-    }
   },
 
   getters: {

@@ -14,9 +14,15 @@
   </b-container>
   <router-view/>
 
+<<<<<<< HEAD
   <b-modal id="modal-add-smaddle" title="Smaddle Toevoegen" @ok="linkDevice">
     <b-form id="linkDevice-form" @submit="linkDevice">
     <p class="my-4">Hier kan je een smaddle toevoegen aan jouw account.</p>
+=======
+  <b-modal id="modal-add-smaddle" title="Smaddle Toevoegen">
+    <b-form id="linkDevice-form">
+    <p class="my-4">Hier kan je een smaddle toeveogen aan jouw account.</p>
+>>>>>>> f67c1e2482f07a550a6047f46abb3f5f0a7f4deb
       <b-form-group label="ID">
         <b-form-input required placeholder="xxx-xxx-xxx-xxx" v-model="linkDeviceId"/>
       </b-form-group>
@@ -46,7 +52,7 @@ export default {
     this.$store.dispatch('getDevices').then((devices)=>{
       console.log('devices', devices)
     })
-   },
+  },
   methods:{
     linkDevice(e){
       e.preventDefault();

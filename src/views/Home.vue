@@ -2,14 +2,6 @@
   <div id="home">
     <Map/>
     <Sidebar/>
-    <div id="legend" class="shadow-sm">
-      <h6>Legenda</h6>
-      <ul class="list-unstyled">
-        <li><b-icon class="color" icon="circle-fill"/><span>Normaal</span></li>
-        <li><b-icon class="color stolen" icon="circle-fill"/><span>Gestolen</span></li>
-        <li><b-icon class="color offline" icon="circle-fill"/><span>Offline</span></li>
-      </ul>
-    </div>
   </div>
 </template>
 
@@ -37,12 +29,6 @@ export default {
     }).catch(()=>{
       this.$router.push('/auth')
     })
-    // this.$store.dispatch('getUser').then(data=>{
-    //   console.log('user',data)
-    //   this.$store.dispatch('getDevices').then(deviceMap =>{
-    //     console.log(deviceMap)
-    //   })
-    // })
   }
 }
 </script>
