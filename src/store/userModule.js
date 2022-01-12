@@ -82,7 +82,7 @@ export const userModule = {
             .then(res => {
               if (res.status === 200){
                 res.json().then(data =>{
-                  commit('setUser', data[0]);
+                  commit('setUser', data[0]); // TODO: GET CURRENT USER
                   commit('setRequestStatus', null)
                   resolve(data[0])
                 })
