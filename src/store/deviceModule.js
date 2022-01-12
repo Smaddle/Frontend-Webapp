@@ -12,7 +12,8 @@ export const deviceModule = {
 
   getters: {
     devicesStolen(state) {
-      return {type: 'FeatureCollection', features: state.devices.features.filter(device => device.properties.status === 'stolen')}
+      console.log(state.devices.features.filter(device => device.properties.status === 'stolen' && device.geometry.coordinates != undefined))
+      return {type: 'FeatureCollection', features: state.devices.features.filter(device => device.properties.status === 'stolen' && device.geometry.coordinates != undefined)}
     },
 
     devicesNormal(state) {
@@ -67,10 +68,12 @@ export const deviceModule = {
                 battery: 20,
                 status: 'stolen',
                 deviceToken: device.id
+                // deviceToken: '4ea2353a-fc4d-4463-b244-1279243b4396'
               }
             }
         )
       })
+      console.log(state.devices.properties)
     },
     setDeviceRequestStatus(state, status){
       state.requestStatus = status
@@ -145,7 +148,7 @@ export const deviceModule = {
             res.json().then((devicesArray)=>{
               commit('setDeviceRequestStatus', null)
               commit('setDevices',devicesArray)
-              resolve(state.devicesList)
+              resolve(state.devices)
             })
 
           }else{
