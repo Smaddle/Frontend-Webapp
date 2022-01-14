@@ -67,7 +67,6 @@ export default {
   watch:{
     // Here I wait a couple milliseconds for the sidebar to disapear before removing the contents
     currentSmaddle(newVal) {
-      console.log('cool')
       if (newVal == null) {
         this.hidden = true
       }

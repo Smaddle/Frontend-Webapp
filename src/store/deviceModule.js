@@ -57,25 +57,27 @@ export const deviceModule = {
       if (devices === null) {
         state.devices.features = [];
       }
-      devices.forEach(device => {
-        state.devices.features.push(
-          {
-            type: 'Feature',
-            geometry: {
-              type: 'Point',
-            },
-            properties: {
-              name: device.name,
-              last_updated: 1639405146,
-              stolen: false,
-              battery: 20,
-              status: 'stolen',
-              deviceToken: device.id
-              // deviceToken: '4ea2353a-fc4d-4463-b244-1279243b4396'
+      if(state.devices.features.length == 0) {
+        devices.forEach(device => {
+          state.devices.features.push(
+            {
+              type: 'Feature',
+              geometry: {
+                type: 'Point',
+              },
+              properties: {
+                name: device.name,
+                last_updated: 1639405146,
+                stolen: false,
+                battery: 20,
+                status: 'stolen',
+                deviceToken: device.id
+                // deviceToken: '4ea2353a-fc4d-4463-b244-1279243b4396'
+              }
             }
-          }
-        )
-      })
+          )
+        })
+      }
     },
     setDeviceRequestStatus(state, status) {
       state.requestStatus = status
@@ -172,7 +174,6 @@ export const deviceModule = {
       setTimeout(() => commit('setSelectedDevice', deviceToken), 500)
     },
 
-    //TODO not done yet
     async linkDevice({ commit }, deviceToken) {
       let res = await fetch(URL + '/devices/linkdevice', {
         method: "POST",

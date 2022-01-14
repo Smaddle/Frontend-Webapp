@@ -30,7 +30,6 @@ export default {
   },
   methods: {
     logout() {
-      console.log("ldldl")
       this.$store.dispatch('logout')
     }
   }

@@ -97,7 +97,6 @@ export function createLayer(map, status, dataPoints) {
         duration: 3000,
         curve: 1
       });
-      console.log(store.getters.getSelectedDevice)
     })
   }
 }

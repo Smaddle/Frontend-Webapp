@@ -40,7 +40,7 @@ export default {
   //07edb281-3ac8-40d9-8d47-78f7b7522b60
   computed:{
     ...mapState({
-      devices: state => state.device.devicesList
+      devices: state => state.device.devices
     })
   },
   beforeMount() {

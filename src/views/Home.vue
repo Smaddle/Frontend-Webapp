@@ -20,15 +20,10 @@ export default {
       user: state => state.user.user
     })
   },
-  mounted() {
-    this.$store.dispatch('getUser').then((data)=>{
-      console.log('user',data)
-      this.$store.dispatch('getDevices').then((devices)=>{
-        console.log('devices', devices)
-      })
-    }).catch(()=>{
-      this.$router.push('/auth')
-    })
+  async mounted() {
+    await this.$store.dispatch('getUser')
+    console.log('user', this.$store.state.device.devices)
+    // this.$store.dispatch('getDevices')
   }
 }
 </script>

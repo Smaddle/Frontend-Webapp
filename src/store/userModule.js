@@ -122,28 +122,28 @@ export const userModule = {
      * @param commit
      * @returns {Promise<void>}
      */
-    getUser({ commit }) {
+    async getUser({ commit, dispatch }) {
       commit("setRequestStatus", 'fetching');
-      return new Promise((resolve, reject) => {
-        fetch(URL + '/Users/currentUser', { method: "GET", credentials: "include" })
-          .then(res => {
-            if (res.status === 200) {
-              res.json().then(user => {
-                commit('setUser', user);
-                commit('setRequestStatus', null)
-                resolve(user)
-              })
-            } else {
-              commit('setRequestStatus', res.status)
-              commit('setUser', null)
-              reject(res)
-            }
-          }).catch(error => {
-            commit('setRequestStatus', '?')
-            commit('setUser', null)
-            reject(error);
-          })
-      })
+      try {
+        let res = await fetch(URL + '/Users/currentUser', {method: "GET", credentials: "include"})
+        if (res.status === 200) {
+          let user = await res.json()
+          commit('setUser', user);
+          commit('setRequestStatus', null)
+          commit('setDevices', user.devices)
+          dispatch('setSelectedDevice')
+        }
+
+        else {
+          commit('setRequestStatus', res.status)
+          commit('setUser', null)
+          router.push('/auth')
+        }
+      }
+      catch (e) {
+        commit('setRequestStatus', '?')
+        commit('setUser', null)
+      }
     },
 
     /**
