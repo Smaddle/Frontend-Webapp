@@ -1,4 +1,7 @@
+import config from '../config'
 import router from '../router'
+
+const URL = config.API_URL;
 
 export const userModule = {
   state: {
@@ -23,7 +26,7 @@ export const userModule = {
   actions: {
     async register(state, registerData) {
       try {
-        let res = await fetch('http://localhost:8000/Users/register', {
+        let res = await fetch(URL + '/Users/register', {
           method: 'POST',
           headers: {
             'Accept': 'application/json, text/plain',
@@ -39,69 +42,71 @@ export const userModule = {
           })
         })
         if (res.status === 200) {
-          await router.push({name: 'Inloggen'})
+          await router.push({ name: 'Inloggen' })
         }
       } catch (e) {
         console.log(e)
       }
     },
 
-    login({commit}, loginData) {
+    login({ commit }, loginData) {
       commit('setRequestStatus', 'fetching')
-      return new Promise((resolve,reject)=>{
-        fetch('http://localhost:8000/Users/login', {method: 'POST',
+      return new Promise((resolve, reject) => {
+        fetch(URL + '/Users/login', {
+          method: 'POST',
           credentials: 'include',
           headers: {
             'Accept': 'application/json, text/plain',
             'Content-Type': 'application/json;charset=UTF-8'
           },
-          body: JSON.stringify({username: loginData.username, password: loginData.password})}).then(res =>{
-            if (res.status === 200){
-              res.json().then(data=>{
-                commit('setDevices', data.devices)
-                commit('setUser', data)
-                commit('setRequestStatus', null)
-                resolve(data)
-              })
-            }else{
-              commit('setRequestStatus', res.status)
-              commit('setUser', null)
-              reject(res)
-            }
-        }).catch(e=>{
+          body: JSON.stringify({ username: loginData.username, password: loginData.password })
+        }).then(res => {
+          if (res.status === 200) {
+            res.json().then(data => {
+              commit('setDevices', data.devices)
+              commit('setUser', data)
+              commit('setRequestStatus', null)
+              resolve(data)
+            })
+          } else {
+            commit('setRequestStatus', res.status)
+            commit('setUser', null)
+            reject(res)
+          }
+        }).catch(e => {
           commit('setUser', null)
           console.log(e)
         })
       })
     },
 
-    getUser({commit}){
+    getUser({ commit }) {
       commit("setRequestStatus", 'fetching');
-      return new Promise((resolve,reject) =>{
-        fetch('http://localhost:8000/Users', {method: "GET", credentials: "include"})
-            .then(res => {
-              if (res.status === 200){
-                res.json().then(data =>{
-                  commit('setUser', data[0]); // TODO: GET CURRENT USER
-                  commit('setRequestStatus', null)
-                  resolve(data[0])
-                })
-              }else{
-                commit('setRequestStatus', res.status)
-                commit('setUser', null)
-                reject(res)
-              }
-            }).catch(error =>{
-              commit('setRequestStatus', '?')
+      return new Promise((resolve, reject) => {
+        fetch(URL + '/Users', { method: "GET", credentials: "include" })
+          .then(res => {
+            if (res.status === 200) {
+              res.json().then(data => {
+                commit('setUser', data[0]); // TODO: GET CURRENT USER
+                commit('setRequestStatus', null)
+                resolve(data[0])
+              })
+            } else {
+              commit('setRequestStatus', res.status)
               commit('setUser', null)
-              reject(error);
-        })
+              reject(res)
+            }
+          }).catch(error => {
+            commit('setRequestStatus', '?')
+            commit('setUser', null)
+            reject(error);
+          })
       })
     },
 
-    async updateAccount({commit}, updatedUser) {
+    async updateAccount({ commit }, updatedUser) {
       try {
-        let res = await fetch('http://localhost:8000/Users/update', {
+        let res = await fetch(URL+'/Users/update', {
           method: 'PUT',
           credentials: 'include',
           headers: {
@@ -118,7 +123,7 @@ export const userModule = {
           })
         })
         if (res.status === 401) {
-          router.push({name: 'Inloggen'})
+          router.push({ name: 'Inloggen' })
         } else {
           commit('setUser', updatedUser)
         }

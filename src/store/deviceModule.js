@@ -1,3 +1,7 @@
+import config from '../config'
+
+const DEVICE_URL = config.DEVICE_WS_API_URL;
+const URL = config.API_URL;
 export const deviceModule = {
   state: {
     map: null,
@@ -8,19 +12,19 @@ export const deviceModule = {
       features: []
     },
     requestStatus: null
-    },
+  },
 
   getters: {
     devicesStolen(state) {
-      return {type: 'FeatureCollection', features: state.devices.features.filter(device => device.properties.status === 'stolen' && device.geometry.coordinates != undefined)}
+      return { type: 'FeatureCollection', features: state.devices.features.filter(device => device.properties.status === 'stolen' && device.geometry.coordinates != undefined) }
     },
 
     devicesNormal(state) {
-      return {type: 'FeatureCollection', features: state.devices.features.filter(device => device.properties.status === 'normal')}
+      return { type: 'FeatureCollection', features: state.devices.features.filter(device => device.properties.status === 'normal') }
     },
 
     devicesOffline(state) {
-      return {type: 'FeatureCollection', features: state.devices.features.filter(device => device.properties.status === 'offline')}
+      return { type: 'FeatureCollection', features: state.devices.features.filter(device => device.properties.status === 'offline') }
     },
 
     getDeviceTokens(state) {
@@ -45,32 +49,32 @@ export const deviceModule = {
       state.map = map
     },
     setDevices(state, devices) {
-      if (devices === null){
+      if (devices === null) {
         state.devices.features = [];
       }
       devices.forEach(device => {
         console.log(device.name)
         state.devices.features.push(
-            {
-              type: 'Feature',
-              geometry: {
-                type: 'Point',
-              },
-              properties: {
-                name: device.name,
-                last_updated: 1639405146,
-                stolen: false,
-                battery: 20,
-                status: 'stolen',
-                deviceToken: device.id
-                // deviceToken: '4ea2353a-fc4d-4463-b244-1279243b4396'
-              }
+          {
+            type: 'Feature',
+            geometry: {
+              type: 'Point',
+            },
+            properties: {
+              name: device.name,
+              last_updated: 1639405146,
+              stolen: false,
+              battery: 20,
+              status: 'stolen',
+              deviceToken: device.id
+              // deviceToken: '4ea2353a-fc4d-4463-b244-1279243b4396'
             }
+          }
         )
       })
       console.log(state.devices.properties)
     },
-    setDeviceRequestStatus(state, status){
+    setDeviceRequestStatus(state, status) {
       state.requestStatus = status
     },
     setSelectedDevice(state, deviceToken) {
@@ -93,14 +97,14 @@ export const deviceModule = {
       })
 
       //apparently just updating an index does not get detected as a change so this seemingly useless assignment is necessary
-      state.devices = {...state.devices}
+      state.devices = { ...state.devices }
 
     },
   },
 
   actions: {
-    registerDevices({state, commit, getters}) {
-      let socket = new WebSocket("ws://localhost:3000")
+    registerDevices({ state, commit, getters }) {
+      let socket = new WebSocket(DEVICE_URL)
       socket.onopen = () => socket.send(JSON.stringify({
         "action": "REGISTER",
         "instructions": [""],
@@ -117,37 +121,16 @@ export const deviceModule = {
 
       commit('setWebSocket', socket)
     },
-    createDevice({commit}, name){
-      return new Promise((resolve, reject)=>{
+    createDevice({ commit }, name) {
+      return new Promise((resolve, reject) => {
         commit('setDeviceRequestStatus', 'fetching')
-        fetch('http://localhost:8000/devices/create',{method: "POST", credentials: "include", body:JSON.stringify({name: name})}).then(res=>{
-          if(res.status === 200){
+        fetch(URL + '/devices/create', { method: "POST", credentials: "include", body: JSON.stringify({ name: name }) }).then(res => {
+          if (res.status === 200) {
             res.json().then(device => {
               commit('setDeviceRequestStatus', null)
               resolve(device)
             })
-          }else{
-            commit('setDeviceRequestStatus', res.status)
-            reject(res)
-          }
-        }).catch(err =>{
-          commit('setDeviceRequestStatus', null)
-          reject(err)
-        })
-      })
-    },
-    getDevices({commit,state}){
-      return new Promise((resolve,reject)=>{
-        commit('setDeviceRequestStatus', 'fetching')
-        fetch('http://localhost:8000/devices', {method: "GET", credentials:"include"}).then(res=>{
-          if(res.status === 200){
-            res.json().then((devicesArray)=>{
-              commit('setDeviceRequestStatus', null)
-              commit('setDevices',devicesArray)
-              resolve(state.devices)
-            })
-
-          }else{
+          } else {
             commit('setDeviceRequestStatus', res.status)
             reject(res)
           }
@@ -157,23 +140,44 @@ export const deviceModule = {
         })
       })
     },
-    clearDevices({commit}){
+    getDevices({ commit, state }) {
+      return new Promise((resolve, reject) => {
+        commit('setDeviceRequestStatus', 'fetching')
+        fetch(URL + '/devices', { method: "GET", credentials: "include" }).then(res => {
+          if (res.status === 200) {
+            res.json().then((devicesArray) => {
+              commit('setDeviceRequestStatus', null)
+              commit('setDevices', devicesArray)
+              resolve(state.devices)
+            })
+
+          } else {
+            commit('setDeviceRequestStatus', res.status)
+            reject(res)
+          }
+        }).catch(err => {
+          commit('setDeviceRequestStatus', null)
+          reject(err)
+        })
+      })
+    },
+    clearDevices({ commit }) {
       commit('setDevices', null)
     },
-    setSelectedDevice({commit}, deviceToken){
-      setTimeout(() => commit('setSelectedDevice',deviceToken), 500)
+    setSelectedDevice({ commit }, deviceToken) {
+      setTimeout(() => commit('setSelectedDevice', deviceToken), 500)
     },
 
-    async linkDevice({commit}, deviceToken){
-      let res = await fetch('http://localhost:8000/devices/linkdevice',
-        {method: "POST", credentials: "include", body:JSON.stringify({id: deviceToken})})
-      if(res.status === 200) {
+    async linkDevice({ commit }, deviceToken) {
+      let res = await fetch(URL + '/devices/linkdevice',
+        { method: "POST", credentials: "include", body: JSON.stringify({ id: deviceToken }) })
+      if (res.status === 200) {
         console.log(res.json())
       }
       else {
         console.log(res.status)
       }
-      commit('setSelectedDevice',deviceToken)
+      commit('setSelectedDevice', deviceToken)
     }
   },
 }
