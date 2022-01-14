@@ -15,18 +15,22 @@ export const deviceModule = {
   },
 
   getters: {
+    //Gets all the devices with state stolen
     devicesStolen(state) {
       return { type: 'FeatureCollection', features: state.devices.features.filter(device => device.properties.status === 'stolen' && device.geometry.coordinates != undefined) }
     },
 
+    //Gets all the devices with state normal
     devicesNormal(state) {
       return { type: 'FeatureCollection', features: state.devices.features.filter(device => device.properties.status === 'normal') }
     },
 
+    //Gets all the devices with state offline
     devicesOffline(state) {
       return { type: 'FeatureCollection', features: state.devices.features.filter(device => device.properties.status === 'offline') }
     },
 
+    //Gets the deviceTokens for all devices given by the backend. These are used to register in the DeviceApi
     getDeviceTokens(state) {
       const deviceTokens = []
       for (let device of state.devices.features) {
@@ -36,6 +40,7 @@ export const deviceModule = {
       return deviceTokens
     },
 
+    //Gets the selected device, by filtering state.devices for a device with deviceToken equal to selectedDevice
     getSelectedDevice(state) {
       return state.devices.features.filter(device => device.properties.deviceToken == state.selectedDevice)[0]
     }
@@ -53,7 +58,6 @@ export const deviceModule = {
         state.devices.features = [];
       }
       devices.forEach(device => {
-        console.log(device.name)
         state.devices.features.push(
           {
             type: 'Feature',
@@ -72,13 +76,11 @@ export const deviceModule = {
           }
         )
       })
-      console.log(state.devices.properties)
     },
     setDeviceRequestStatus(state, status) {
       state.requestStatus = status
     },
     setSelectedDevice(state, deviceToken) {
-      console.log(deviceToken)
       state.selectedDevice = deviceToken
     },
 
@@ -103,6 +105,8 @@ export const deviceModule = {
   },
 
   actions: {
+    //Opens the websocket connection to the deviceApi.
+    //This sends all the deviceTokens given by getDeviceTokens to receive updated data about those.
     registerDevices({ state, commit, getters }) {
       let socket = new WebSocket(DEVICE_URL)
       socket.onopen = () => socket.send(JSON.stringify({
@@ -121,6 +125,7 @@ export const deviceModule = {
 
       commit('setWebSocket', socket)
     },
+
     createDevice({ commit }, name) {
       return new Promise((resolve, reject) => {
         commit('setDeviceRequestStatus', 'fetching')
@@ -140,34 +145,34 @@ export const deviceModule = {
         })
       })
     },
-    getDevices({ commit, state }) {
-      return new Promise((resolve, reject) => {
-        commit('setDeviceRequestStatus', 'fetching')
-        fetch(URL + '/devices', { method: "GET", credentials: "include" }).then(res => {
-          if (res.status === 200) {
-            res.json().then((devicesArray) => {
-              commit('setDeviceRequestStatus', null)
-              commit('setDevices', devicesArray)
-              resolve(state.devices)
-            })
 
-          } else {
-            commit('setDeviceRequestStatus', res.status)
-            reject(res)
-          }
-        }).catch(err => {
+    async getDevices({ commit }) {
+      try {
+        commit('setDeviceRequestStatus', 'fetching')
+        let res = await fetch(URL + '/devices', { method: "GET", credentials: "include" })
+        if (res.status === 200) {
+          let devicesArray =  await res.json()
           commit('setDeviceRequestStatus', null)
-          reject(err)
-        })
-      })
+          commit('setDevices', devicesArray)
+        }
+        else {
+          commit('setDeviceRequestStatus', res.status)
+        }
+      }
+      catch(e) {
+        console.log(e)
+      }
     },
+
     clearDevices({ commit }) {
       commit('setDevices', null)
     },
+
     setSelectedDevice({ commit }, deviceToken) {
       setTimeout(() => commit('setSelectedDevice', deviceToken), 500)
     },
 
+    //TODO not done yet
     async linkDevice({ commit }, deviceToken) {
       let res = await fetch(URL + '/devices/linkdevice',
         { method: "POST", credentials: "include", body: JSON.stringify({ id: deviceToken }) })
