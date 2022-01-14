@@ -174,12 +174,19 @@ export const deviceModule = {
 
     //TODO not done yet
     async linkDevice({ commit }, deviceToken) {
-      let res = await fetch(URL + '/devices/linkdevice',
-        { method: "POST", credentials: "include", body: JSON.stringify({ id: deviceToken }) })
+      let res = await fetch(URL + '/devices/linkdevice', {
+        method: "POST",
+        credentials: "include",
+        headers: {
+          'Accept': 'application/json, text/plain',
+          'Content-Type': 'application/json;charset=UTF-8'
+        },
+        body: JSON.stringify(deviceToken)})
       if (res.status === 200) {
-        console.log(res.json())
+        alert('device linked')
       }
       else {
+        alert('unable to link device')
         console.log(res.status)
       }
       commit('setSelectedDevice', deviceToken)

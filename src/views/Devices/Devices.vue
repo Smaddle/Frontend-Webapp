@@ -37,6 +37,7 @@ export default {
       linkDeviceId: ''
     }
   },
+  //07edb281-3ac8-40d9-8d47-78f7b7522b60
   computed:{
     ...mapState({
       devices: state => state.device.devicesList
@@ -50,7 +51,7 @@ export default {
   methods:{
     linkDevice(e){
       e.preventDefault();
-      console.log(this.linkDeviceId)
+      this.$store.dispatch('linkDevice', this.linkDeviceId)
     }
   }
 }
