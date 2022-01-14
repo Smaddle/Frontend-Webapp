@@ -12,7 +12,7 @@
         <b-dropdown-divider/>
         <b-dropdown-item to="/account">Account</b-dropdown-item>
         <b-dropdown-divider/>
-        <b-dropdown-item-button variant="danger" @click="logout">Uitloggen</b-dropdown-item-button>>
+        <b-dropdown-item-button variant="danger" @click="logout">Uitloggen</b-dropdown-item-button>
       </b-dropdown>
     </div>
   </div>
