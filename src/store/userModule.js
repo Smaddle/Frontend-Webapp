@@ -104,13 +104,13 @@ export const userModule = {
     getUser({ commit }) {
       commit("setRequestStatus", 'fetching');
       return new Promise((resolve, reject) => {
-        fetch(URL + '/Users', { method: "GET", credentials: "include" })
+        fetch(URL + '/Users/currentUser', { method: "GET", credentials: "include" })
           .then(res => {
             if (res.status === 200) {
-              res.json().then(data => {
-                commit('setUser', data[0]); // TODO: GET CURRENT USER
+              res.json().then(user => {
+                commit('setUser', user);
                 commit('setRequestStatus', null)
-                resolve(data[0])
+                resolve(user)
               })
             } else {
               commit('setRequestStatus', res.status)
