@@ -12,7 +12,7 @@
         <b-dropdown-divider/>
         <b-dropdown-item to="/account">Account</b-dropdown-item>
         <b-dropdown-divider/>
-        <b-dropdown-item variant="danger" to="/auth">Uitloggen</b-dropdown-item>
+        <b-dropdown-item-button variant="danger" @click="logout">Uitloggen</b-dropdown-item-button>>
       </b-dropdown>
     </div>
   </div>
@@ -27,6 +27,12 @@ export default {
     ...mapState({
       user: state => state.user.user
     })
+  },
+  methods: {
+    logout() {
+      console.log("ldldl")
+      this.$store.dispatch('logout')
+    }
   }
 }
 </script>

@@ -53,13 +53,13 @@ export const userModule = {
       commit('setRequestStatus', 'fetching')
       return new Promise((resolve, reject) => {
         fetch(URL + '/Users/login', {
-          method: 'POST',
-          credentials: 'include',
-          headers: {
-            'Accept': 'application/json, text/plain',
-            'Content-Type': 'application/json;charset=UTF-8'
-          },
-          body: JSON.stringify({ username: loginData.username, password: loginData.password })
+              method: 'POST',
+              credentials: 'include',
+              headers: {
+                'Accept': 'application/json, text/plain',
+                'Content-Type': 'application/json;charset=UTF-8'
+              },
+              body: JSON.stringify({ username: loginData.username, password: loginData.password })
         }).then(res => {
           if (res.status === 200) {
             res.json().then(data => {
@@ -78,6 +78,27 @@ export const userModule = {
           console.log(e)
         })
       })
+    },
+
+    async logout({commit}) {
+      try {
+        let res = await fetch(URL + '/Users/logout', {
+          credentials: 'include',
+          headers: {
+            'Accept': 'application/json, text/plain',
+            'Content-Type': 'application/json;charset=UTF-8'
+          }
+        })
+        if (res.status === 200) {
+          console.log('logging out')
+          commit('setUser', null)
+          commit('setDevices', [])
+          await router.push({name: 'Inloggen'})
+        }
+      }
+      catch(e) {
+        console.log(e)
+      }
     },
 
     getUser({ commit }) {
