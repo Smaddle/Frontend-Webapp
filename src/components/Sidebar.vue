@@ -17,15 +17,15 @@
         <b-row>
           <b-col>
             <h2><b-icon icon="thermometer-half"/></h2>
-            <span>{{currentSmaddle.properties.imu.temp}} °C</span>
+            <span class="text-primary">{{currentSmaddle.properties.imu.temp}} °C</span>
           </b-col>
           <b-col>
             <h2><b-icon icon="bicycle"/></h2>
-            <span>{{currentSmaddle.properties.spd}} km/u</span>
+            <span class="text-primary">{{currentSmaddle.properties.spd}} km/u</span>
           </b-col>
           <b-col>
             <h2><b-icon icon="arrow-bar-up"/></h2>
-            <span>{{currentSmaddle.geometry.coordinates[2]}} m</span>
+            <span class="text-primary">{{currentSmaddle.geometry.coordinates[2]}} m</span>
           </b-col>
         </b-row>
       </section>
