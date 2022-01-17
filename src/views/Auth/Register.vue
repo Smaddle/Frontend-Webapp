@@ -44,12 +44,13 @@ export default {
     register(e){
       e.preventDefault();
       if (this.registerData.password === this.registerData.password_confirm){
-        this.$store.dispatch('register', this.registerData)
+        this.$store.dispatch('register', this.registerData).then(()=>{
+          this.$router.push({ name: 'Inloggen' })
+        }).catch(res=>{
+          alert(res.message)
+        });
       }
     }
   }
 }
 </script>
-
-<style scoped>
-</style>

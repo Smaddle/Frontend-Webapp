@@ -31,8 +31,8 @@ export const userModule = {
      * @returns {Promise<void>}
      */
     async register(state, registerData) {
-      try {
-        let res = await fetch(URL + '/Users/register', {
+      return new Promise((resolve,reject) =>{
+        fetch(URL + '/Users/register', {
           method: 'POST',
           headers: {
             'Accept': 'application/json, text/plain',
@@ -46,13 +46,16 @@ export const userModule = {
             "MiddleName": registerData.middlename,
             "LastName": registerData.lastname
           })
+        }).then((res) =>{
+          if (res.status === 200){
+            resolve(200)
+          }else if (res.status === 400) {
+            res.json().then(data => {
+              reject(data)
+            });
+          }
         })
-        if (res.status === 200) {
-          await router.push({ name: 'Inloggen' })
-        }
-      } catch (e) {
-        console.log(e)
-      }
+      })
     },
 
     /**
