@@ -1,6 +1,6 @@
 <template>
   <div class="account">
-    <b-container fluid>
+    <b-container>
       <h1>Account</h1>
       <b-form @change="edited = true" @submit="updateAccount">
         <b-form-group label="E-mailadres">

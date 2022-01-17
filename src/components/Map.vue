@@ -41,18 +41,12 @@ export default {
     this.setMap(new mapboxgl.Map({
       container: 'mapContainer',
       style: `mapbox://styles/mapbox/${this.mapType}`,
-      center: [-74.5, 40],
-      zoom: 9
+      center: [5.291266, 52.132633],
+      zoom: 7
     }))
 
     this.device.map.on('styledata', () => {
       this.setMarkerLayer()
-      this.map.flyTo({
-        center: [this.device.devices.features[0].geometry.coordinates[0], this.device.devices.features[0].geometry.coordinates[1]],
-        zoom: 16,
-        duration: 3000,
-        curve: 1
-      });
     })
 
     this.device.map.on('load', () => {
