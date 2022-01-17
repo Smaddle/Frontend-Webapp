@@ -64,8 +64,9 @@ export const userModule = {
      * @param loginData - object existing of username or email and password.
      * @returns {Promise<void>}
      */
-    async login({ commit }, loginData) {
+    async login({ rootState, commit }, loginData) {
       try {
+        console.log(rootState.device.devices)
         commit('setRequestStatus', 'fetching')
         let res = await fetch(URL + '/Users/login', {
           method: 'POST',

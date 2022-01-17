@@ -54,7 +54,8 @@ export const deviceModule = {
       state.map = map
     },
     setDevices(state, devices) {
-      if (devices === null) {
+      if (devices === null || devices.length === 0) {
+        console.log('test')
         state.devices.features = [];
       }
       if(state.devices.features.length == 0) {
