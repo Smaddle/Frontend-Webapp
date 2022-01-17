@@ -66,7 +66,6 @@ export const userModule = {
      */
     async login({ rootState, commit }, loginData) {
       try {
-        console.log(rootState.device.devices)
         commit('setRequestStatus', 'fetching')
         let res = await fetch(URL + '/Users/login', {
           method: 'POST',
@@ -109,7 +108,6 @@ export const userModule = {
           }
         })
         if (res.status === 200) {
-          console.log('logging out')
           commit('setUser', null)
           commit('setDevices', [])
           await router.push({name: 'Inloggen'})
