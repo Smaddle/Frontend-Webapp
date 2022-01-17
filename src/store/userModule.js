@@ -64,7 +64,7 @@ export const userModule = {
      * @param loginData - object existing of username or email and password.
      * @returns {Promise<void>}
      */
-    async login({ rootState, commit }, loginData) {
+    async login({ commit }, loginData) {
       try {
         commit('setRequestStatus', 'fetching')
         let res = await fetch(URL + '/Users/login', {
