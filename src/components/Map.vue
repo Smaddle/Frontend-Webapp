@@ -47,6 +47,12 @@ export default {
 
     this.device.map.on('styledata', () => {
       this.setMarkerLayer()
+      this.map.flyTo({
+        center: [this.device.devices.features[0].geometry.coordinates[0], this.device.devices.features[0].geometry.coordinates[1]],
+        zoom: 16,
+        duration: 3000,
+        curve: 1
+      });
     })
 
     this.device.map.on('load', () => {

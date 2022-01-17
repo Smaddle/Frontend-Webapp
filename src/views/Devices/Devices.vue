@@ -6,8 +6,8 @@
       <b-button variant="none" class="text-primary font-weight-bold add" v-b-modal.modal-add-smaddle><b-icon icon="plus-circle"/></b-button>
     </div>
 
-    <b-row v-if="devices !== null"  cols="1" cols-md="2" cols-lg="3" cols-xl="4">
-      <b-col v-for="(device) in devices" :key="device.id">
+    <b-row v-if="devices.features.length !== 0"  cols="1" cols-md="2" cols-lg="3" cols-xl="4">
+      <b-col v-for="(device) in devices.features" :key="device.properties.deviceToken">
         <DeviceButton :device="device"/>
       </b-col>
     </b-row>
@@ -43,10 +43,9 @@ export default {
       devices: state => state.device.devices
     })
   },
-  beforeMount() {
-    this.$store.dispatch('getDevices').then((devices)=>{
-      console.log('devices', devices)
-    })
+  async beforeMount() {
+    await this.$store.dispatch('getUser')
+    console.log('devices', this.devices.features.length)
   },
   methods:{
     linkDevice(e){

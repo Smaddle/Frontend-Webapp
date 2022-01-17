@@ -24,10 +24,8 @@ export default {
       return this.devices.filter((item)=> item.id === this.$route.params.id)[0]
     },
   },
-  beforeMount() {
-    this.$store.dispatch('getDevices').then(data =>{
-      console.log(data)
-    })
+  async beforeMount() {
+    await this.$store.dispatch('getUser')
   }
 }
 </script>

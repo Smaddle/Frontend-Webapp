@@ -22,8 +22,6 @@ export default {
   },
   async mounted() {
     await this.$store.dispatch('getUser')
-    console.log('user', this.$store.state.device.devices)
-    // this.$store.dispatch('getDevices')
   }
 }
 </script>
