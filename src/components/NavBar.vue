@@ -1,13 +1,16 @@
 <template>
   <div id="navbar">
-    <b-button variant="square" class="shadow-sm" to="/devices" v-if="$route.name === 'Home'">
+    <b-button variant="square" class="shadow-sm" to="/devices" v-if="$route.name === 'Home'" v-b-tooltip.hover title="Bekijk je apparaten">
       <b-icon icon="grid-fill"></b-icon>
     </b-button >
-    <b-button variant="square" class="shadow-sm" to="/" v-else>
+    <b-button variant="square" class="shadow-sm" to="/" v-else v-b-tooltip.hover title="Terug naar de kaart">
       <b-icon icon="map-fill"></b-icon>
     </b-button>
     <div class="d-flex">
-      <b-dropdown id="dropdown-right" right class="shadow-sm account shadow-sm" variant="square account" no-caret>
+      <b-dropdown id="dropdown-right" right class="shadow-sm account shadow-sm" variant="square account" no-caret v-b-tooltip.hover title="Account opties">
+        <template #button-content>
+          <b-icon icon="person"/>
+        </template>
         <b-dropdown-text v-if="user !== null" class="text-secondary small">{{ user.firstName }} {{ user.lastName }}</b-dropdown-text>
         <b-dropdown-divider/>
         <b-dropdown-item to="/account">Account</b-dropdown-item>
@@ -53,9 +56,7 @@ export default {
   /* This component is rendered later, so that's why it is not scoped */
   .account{
     .btn.account{
-      background-image: url("https://avatars.githubusercontent.com/u/45227130?v=4");
-      background-position: center;
-      background-size: cover;
+      font-size: x-large;
     }
   }
   .dropdown-menu{

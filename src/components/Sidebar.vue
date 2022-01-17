@@ -29,8 +29,7 @@
           </b-col>
         </b-row>
       </section>
-      <section class="mt-4 d-flex justify-content-between">
-        <b-button variant="none" class="text-primary">Meer informatie</b-button>
+      <section class="mt-4 d-flex justify-content-end">
         <b-button class="sidebar-close" variant="icon" @click="hideSideBar"><b-icon icon="x"/></b-button>
       </section>
     </div>

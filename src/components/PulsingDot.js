@@ -6,13 +6,13 @@ export function createPulsingDot(map, status) {
   switch (status)
   {
     case 'stolen':
-      color = '220, 53, 69'
+      color = '255, 154, 0'
       break
     case 'normal':
-      color = '0, 123, 255'
+      color = '255, 154, 0'
       break
     case 'offline':
-      color = '253, 126, 20'
+      color = '255, 154, 0'
       break
 
   }
