@@ -37,7 +37,6 @@ export default {
       linkDeviceId: ''
     }
   },
-  //07edb281-3ac8-40d9-8d47-78f7b7522b60
   computed:{
     ...mapState({
       devices: state => state.device.devices
@@ -45,7 +44,6 @@ export default {
   },
   async beforeMount() {
     await this.$store.dispatch('getUser')
-    console.log('devices', this.devices.features.length)
   },
   methods:{
     linkDevice(e){

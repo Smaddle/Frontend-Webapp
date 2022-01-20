@@ -2,9 +2,10 @@
   <div class="device-card">
     <h2>Device: {{device.properties.name}}</h2>
     <div>
-      <p>Battery: {{roundNumber(device.properties.bat.sad)}}%</p>
-      <p>Longitude and Latitude: {{device.geometry.coordinates[0]}}, {{device.geometry.coordinates[1]}}</p>
-      <p>Speed: {{roundNumber(device.properties.spd)}}m/s</p>
+      <p v-if="device.properties.bat">Battery: {{roundNumber(device.properties.bat.sad)}}%</p>
+      <p v-if="device.geometry.coordinates">Longitude and Latitude: {{device.geometry.coordinates[0]}}, {{device.geometry.coordinates[1]}}</p>
+      <p v-if="device.properties.spd">Speed: {{roundNumber(device.properties.spd)}}m/s</p>
+      <p v-if="device.properties.imu">Temperature: {{roundNumber(device.properties.imu.temp)}}°C</p>
     </div>
   </div>
 </template>
