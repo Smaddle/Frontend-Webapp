@@ -8,7 +8,7 @@
 
     <b-row v-if="devices.features.length !== 0"  cols="1" cols-md="2" cols-lg="3" cols-xl="4">
       <b-col v-for="(device) in devices.features" :key="device.properties.deviceToken">
-        <DeviceButton :device="device"/>
+        <Device :device="device"/>
       </b-col>
     </b-row>
   </b-container>
@@ -27,11 +27,11 @@
 </template>
 
 <script>
-import DeviceButton from "@/components/Buttons/DeviceButton";
+import Device from "@/views/Devices/Device";
 import {mapState} from "vuex";
 export default {
   name: "Devices",
-  components: {DeviceButton},
+  components: {Device},
   data(){
     return{
       linkDeviceId: ''

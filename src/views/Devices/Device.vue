@@ -1,35 +1,32 @@
 <template>
-  <div class="device-overview">
-    <h2>Device: {{$route.params.id}}</h2>
+  <div class="device-card">
+    <h2>Device: {{device.properties.name}}</h2>
     <div>
-      <p>Hier moet nog meer informatie van de smaddle komen</p>
-      <p>{{currentTracker}}</p>
+      <p>Battery: {{roundNumber(device.properties.bat.sad)}}%</p>
+      <p>Longitude and Latitude: {{device.geometry.coordinates[0]}}, {{device.geometry.coordinates[1]}}</p>
+      <p>Speed: {{roundNumber(device.properties.spd)}}m/s</p>
     </div>
   </div>
 </template>
 
 <script>
-import {mapState} from "vuex";
-
-
 export default {
   name: "Device",
-  computed:{
-    ...mapState({
-      deviceList: state => state.devicesList
-    }),
-    currentTracker(){
-      if (this.devices === undefined) return;
-      console.log(this.deviceList)
-      return this.devices.filter((item)=> item.id === this.$route.params.id)[0]
-    },
+  props: ['device'],
+  methods: {
+    roundNumber(num) {
+      return (Math.round(num * 10) / 10)
+    }
   },
-  async beforeMount() {
-    await this.$store.dispatch('getUser')
-  }
 }
 </script>
 
 <style scoped>
-
+  .device-card {
+    padding: 1rem;
+    background-color: var(--background-primary);
+  }
+  .device-card p{
+    margin-bottom: 0.1rem;
+  }
 </style>

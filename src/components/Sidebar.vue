@@ -10,22 +10,22 @@
       <section>
         <span>Batterij</span>
         <b-progress class="mt-2">
-          <b-progress-bar :value="currentSmaddle.properties.bat.sad">{{currentSmaddle.properties.bat.sad}}%</b-progress-bar>
+          <b-progress-bar :value="currentSmaddle.properties.bat.sad">{{roundNumber(currentSmaddle.properties.bat.sad)}}%</b-progress-bar>
         </b-progress>
       </section>
       <section class="mt-4 text-center">
         <b-row>
           <b-col>
             <h2><b-icon icon="thermometer-half"/></h2>
-            <span class="text-primary">{{currentSmaddle.properties.imu.temp}} °C</span>
+            <span class="text-primary">{{roundNumber(currentSmaddle.properties.imu.temp)}} °C</span>
           </b-col>
           <b-col>
             <h2><b-icon icon="bicycle"/></h2>
-            <span class="text-primary">{{currentSmaddle.properties.spd}} km/u</span>
+            <span class="text-primary">{{roundNumber(currentSmaddle.properties.spd)}} km/u</span>
           </b-col>
           <b-col>
             <h2><b-icon icon="arrow-bar-up"/></h2>
-            <span class="text-primary">{{currentSmaddle.geometry.coordinates[2]}} m</span>
+            <span class="text-primary">{{roundNumber(currentSmaddle.geometry.coordinates[2])}} m</span>
           </b-col>
         </b-row>
       </section>
@@ -60,6 +60,10 @@ export default {
     hideSideBar() {
       this.hidden = true
       this.$store.dispatch('setSelectedDevice', null)
+    },
+
+    roundNumber(num) {
+      return (Math.round(num * 10) / 10)
     }
   },
 
