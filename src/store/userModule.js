@@ -156,7 +156,7 @@ export const userModule = {
      */
     async updateAccount({ commit }, updatedUser) {
       try {
-        let res = await fetch(URL+'/Users/update', {
+        fetch(URL+'/Users/update', {
           method: 'PUT',
           credentials: 'include',
           headers: {
@@ -172,15 +172,26 @@ export const userModule = {
             "devices": updatedUser.devices
           })
         })
-        if (res.status === 401) {
-          router.push({ name: 'Inloggen' })
-        }
-        else {
-          commit('setUser', updatedUser)
-        }
+        .then(response => {
+          if (response.ok) {
+            commit('setUser', updatedUser);
+            alert('User successfully updated');
+          }
+          else {
+            if (response.status === 401) {
+              router.push({ name: 'Inloggen' });
+            }
+            else {
+              return response.json().then(error => Promise.reject(error));
+            }
+          }
+        })
+        .catch(error => {
+          alert(error.message);
+        });
       }
       catch (e) {
-        console.log(e)
+        console.log(e);
       }
     }
   }
